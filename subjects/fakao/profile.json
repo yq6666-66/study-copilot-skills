@@ -1,0 +1,45 @@
+{
+  "package": "fakao",
+  "displayName": "法考",
+  "description": "国家统一法律职业资格考试，旨在选拔具备从事法律职业所需专业知识与能力的人员。",
+  "examMeta": {
+    "schedule": "客观题考试通常在每年8月举行，主观题考试在9月举行，具体时间以司法部官方公告为准。",
+    "source": "https://www.moj.gov.cn"
+  },
+  "subjects": [
+    {
+      "id": "objective",
+      "name": "客观题",
+      "coachSkill": "kaoyan-material-study-assistant",
+      "syllabusTopics": [
+        "刑法",
+        "民法",
+        "刑事诉讼法",
+        "民事诉讼法",
+        "行政法与行政诉讼法",
+        "商经知（商法、经济法、知识产权）",
+        "理论法（法理学、宪法、法制史、司法制度）",
+        "三国法（国际公法、国际私法、国际经济法）"
+      ],
+      "examMeta": {
+        "description": "客观题包含两卷，每卷100道选择题，总分300分，及格线为180分。考试内容覆盖全部法律学科的基础知识和应用能力。具体考试安排以司法部官方公告为准。",
+        "format": "单项选择题、多项选择题、不定项选择题",
+        "duration": "每卷2.5小时，共5小时"
+      }
+    },
+    {
+      "id": "subjective",
+      "name": "主观题",
+      "coachSkill": "kaoyan-material-study-assistant",
+      "syllabusTopics": [
+        "案例分析",
+        "法律文书写作"
+      ],
+      "examMeta": {
+        "description": "主观题考试主要考察考生运用法律知识分析案件、撰写法律文书的能力。考试内容涵盖各科目重点实务问题，具体题型与要求以司法部官方公告为准。",
+        "format": "案例分析题、法律文书题",
+        "duration": "4小时"
+      }
+    }
+  ]
+}

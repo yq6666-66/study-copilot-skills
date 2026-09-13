@@ -1,7 +1,7 @@
 {
   "model": "BAAI/bge-small-zh-v1.5",
   "dim": 512,
-  "built_at": "2026-09-13T22:33:15+0800",
+  "built_at": "2026-09-13T22:38:57+0800",
   "count": 53,
   "docs": [
     {

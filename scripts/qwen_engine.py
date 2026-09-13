@@ -51,11 +51,46 @@ def _assert_no_secret(text: str) -> None:
         raise AssertionError("安全断言失败：输出内容包含 API Key，拒绝写入日志")
 
 
+def _get_api_key() -> str | None:
+    """进程环境变量优先；Windows 上缺失时回退读用户级注册表（防 setx 后进程滞后）。"""
+    key = os.environ.get("DASHSCOPE_API_KEY")
+    if key:
+        return key
+    try:
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
+            val, _ = winreg.QueryValueEx(k, "DASHSCOPE_API_KEY")
+            return val or None
+    except OSError:
+        return None
+
+
+def _registry_key() -> str | None:
+    """Windows 用户级注册表中的最新 Key（setx 立即写这里，进程环境变量则滞后）。"""
+    try:
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
+            val, _ = winreg.QueryValueEx(k, "DASHSCOPE_API_KEY")
+            return val or None
+    except OSError:
+        return None
+
+
 def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: float = 0.7,
               max_tokens: int | None = None, timeout: int = 60, log: bool = True) -> dict:
-    """调用一次 chat/completions，返回含日志路径的结果字典。"""
-    api_key = os.environ.get("DASHSCOPE_API_KEY")
-    if not api_key:
+    """调用一次 chat/completions，返回含日志路径的结果字典。
+
+    Key 候选：进程环境变量 → Windows 注册表（用户级，防 setx 后进程滞后）。
+    401 invalid_api_key 且还有下一个候选时自动切换重试。
+    """
+    keys: List[str] = []
+    env_key = os.environ.get("DASHSCOPE_API_KEY")
+    if env_key:
+        keys.append(env_key)
+    reg_key = _registry_key()
+    if reg_key and reg_key not in keys:
+        keys.append(reg_key)
+    if not keys:
         raise RuntimeError(
             "未配置 DASHSCOPE_API_KEY。Windows 配置：setx DASHSCOPE_API_KEY \"sk-你的Key\"，"
             "然后新开终端生效。无 Key 时请使用降级路径（会话内出题），不阻塞学习。"
@@ -66,18 +101,23 @@ def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: flo
         payload["max_tokens"] = max_tokens
 
     started = time.time()
-    for attempt in (1, 2):
-        resp = requests.post(
-            ENDPOINT,
-            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-            json=payload, timeout=timeout,
-        )
-        if resp.status_code == 429 and attempt == 1:
-            time.sleep(2 ** attempt)
-            continue
-        if resp.status_code >= 500 and attempt == 1:
-            time.sleep(2)
-            continue
+    resp = None
+    for ki, api_key in enumerate(keys):
+        for attempt in (1, 2):
+            resp = requests.post(
+                ENDPOINT,
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json=payload, timeout=timeout,
+            )
+            if resp.status_code == 429 and attempt == 1:
+                time.sleep(2 ** attempt)
+                continue
+            if resp.status_code >= 500 and attempt == 1:
+                time.sleep(2)
+                continue
+            break
+        if resp.status_code == 401 and ki + 1 < len(keys):
+            continue  # 进程环境变量可能滞后于最新 setx，换注册表候选重试
         break
     latency_ms = int((time.time() - started) * 1000)
 
