@@ -1,0 +1,48 @@
+{
+    "name": "study-copilot",
+    "version": "1.0.0",
+    "description": "装进任何 Agent 的通用学习认知引擎：错题闭环、学习规划、进度诊断、原创模考与可选本地语义记忆，科目配置驱动，预置考研包。",
+    "author": {
+        "name": "yq6666-66",
+        "url": "https://github.com/yq6666-66"
+    },
+    "homepage": "https://github.com/yq6666-66/study-copilot-skills",
+    "repository": "https://github.com/yq6666-66/study-copilot-skills",
+    "license": "MIT",
+    "keywords": [
+        "study",
+        "learning",
+        "agent-skills",
+        "error-loop",
+        "spaced-repetition",
+        "kaoyan",
+        "education"
+    ],
+    "skills": "./skills/",
+    "interface": {
+        "displayName": "学习副驾 Study Copilot",
+        "shortDescription": "装进任何 Agent 的学习认知引擎，任何科目，预置考研包",
+        "longDescription": "通用学习认知引擎：以 Skills 形式为任意 AI Agent（Codex、Claude Code 等）装上学习大脑。核心机制层科目无关——错题闭环、间隔复测、学习规划、进度诊断、原创模考、真题契约与本地记忆；科目由配置驱动，预置考研包（数学一/二、英语一/二、408、政治），法考、CPA、高考等新科目可由向导一键生成。可选本地端侧语义检索（AI PC 算力）与云端大模型协同，学习记录仅存用户本地。",
+        "developerName": "yq6666-66",
+        "category": "Education",
+        "capabilities": [
+            "Education",
+            "Error Loop Coaching",
+            "Planning",
+            "Assessment",
+            "Local Knowledge",
+            "Any-Subject",
+            "Any-Agent"
+        ],
+        "websiteURL": "https://github.com/yq6666-66/study-copilot-skills",
+        "privacyPolicyURL": "https://github.com/yq6666-66/study-copilot-skills/blob/main/PRIVACY.md",
+        "defaultPrompt": [
+            "帮我整理这几次的错题并安排复测",
+            "按我的目标日期倒排一份学习计划",
+            "把我的材料转成摘要和原创练习"
+        ],
+        "brandColor": "#0F766E",
+        "composerIcon": "./assets/study-copilot.svg",
+        "logo": "./assets/study-copilot.svg"
+    }
+}

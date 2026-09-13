@@ -1,0 +1,10 @@
+# Runtime — local semantic retrieval (端侧)
+fastembed>=0.3
+numpy>=1.26
+
+# Runtime — qwen engine (云端)
+requests>=2.31
+
+# Schema validation & dev
+jsonschema>=4.21
+pytest>=8.0

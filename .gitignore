@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Models & indexes (large binaries, rebuilt by embed_index.py)
+models/
+plugins/study-copilot/.index/
+*.onnx
+
+# Logs (local evidence only, never committed)
+logs/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local runtime data
+.codex/

@@ -1,0 +1,21 @@
+{
+  "package": "template",
+  "displayName": "示例科目包（复制后改名）",
+  "description": "新科目包模板：法考/CPA/高考/期末考等。把 package 改为目录同名英文标识，填入 subjects 后即可被机制层使用。",
+  "examMeta": {
+    "schedule": "在此填写考试时间（仅记录用户提供的官方事实，不编造）",
+    "source": "信息来源说明"
+  },
+  "subjects": [
+    {
+      "id": "subject-id-1",
+      "name": "科目中文名",
+      "coachSkill": "kaoyan-material-study-assistant",
+      "syllabusTopics": [
+        "主题一",
+        "主题二"
+      ],
+      "examMeta": {}
+    }
+  ]
+}

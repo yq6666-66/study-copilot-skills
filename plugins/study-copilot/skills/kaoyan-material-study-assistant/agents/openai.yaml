@@ -1,0 +1,4 @@
+interface:
+  display_name: "考研材料学习助手"
+  short_description: "把用户提供的凌乱讲义笔记分块整理为摘要、卡片、提纲和原创练习"
+  default_prompt: "使用 $kaoyan-material-study-assistant 把我提供的材料按范围整理成学习产物。"

@@ -1,0 +1,578 @@
+{
+  "model": "fake",
+  "dim": 64,
+  "built_at": "2026-09-13T20:48:54+0800",
+  "count": 53,
+  "docs": [
+    {
+      "doc_id": "review:r001",
+      "text": "科目：数学一\n知识点：高等数学-极限与连续\n错因：用洛必达法则前未验证是否为 0/0 或 ∞/∞ 型\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-极限与连续",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r002",
+      "text": "科目：数学一\n知识点：高等数学-一元微分\n错因：微分中值定理证明题的辅助函数构造缺少固定套路\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-一元微分",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r003",
+      "text": "科目：数学一\n知识点：高等数学-不定积分\n错因：第二类换元积分后忘记回代原变量\n状态：mastered\n掌握证据：2026-08-28 延迟 7 天后独立完成回代变式题 2 道全对；能完整口述第二类换元五步骤；9 月综合卷同型题作答正确",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-不定积分",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r004",
+      "text": "科目：数学一\n知识点：高等数学-定积分应用\n错因：旋转体体积绕 y 轴旋转时误用绕 x 轴公式\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-定积分应用",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r005",
+      "text": "科目：数学一\n知识点：高等数学-二重积分\n错因：未利用积分区域对称性化简导致计算超时\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-二重积分",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r006",
+      "text": "科目：数学一\n知识点：高等数学-曲线积分\n错因：格林公式使用时边界曲线方向取反\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-曲线积分",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r007",
+      "text": "科目：数学一\n知识点：高等数学-微分方程\n错因：二阶常系数非齐次方程特解形式在特征根重根情形下设错\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-微分方程",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r008",
+      "text": "科目：数学一\n知识点：高等数学-级数\n错因：正项级数判别法选择不当，比较判别法与比值判别法混用\n状态：mastered\n掌握证据：2026-08-30 延迟 7 天后完成判别法分类变式题 3 道全对；能按通项形态说出判别法选择树；错题本回访标记已掌握",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-级数",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r009",
+      "text": "科目：数学一\n知识点：高等数学-级数\n错因：交错级数使用莱布尼茨判别法时漏验单调递减条件\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-级数",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r010",
+      "text": "科目：数学一\n知识点：高等数学-多元微分\n错因：复合函数链式求导漏掉中间变量路径\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-多元微分",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r011",
+      "text": "科目：数学一\n知识点：高等数学-多元微分\n错因：隐函数求导公式与偏导数记号混用\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-多元微分",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r012",
+      "text": "科目：数学一\n知识点：线性代数-矩阵与秩\n错因：含参矩阵秩的讨论漏掉临界情形\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-矩阵与秩",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r013",
+      "text": "科目：数学一\n知识点：线性代数-线性方程组\n错因：解的结构表示不全，漏齐次通解的基底向量\n状态：mastered\n掌握证据：2026-09-02 延迟 6 天后独立写出完整解结构 2 题全对；能解释自由变量个数与基础解系维度的关系；变式（含参方程组）作答正确",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-线性方程组",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r014",
+      "text": "科目：数学一\n知识点：线性代数-特征值\n错因：可对角化判定时漏看重根特征值的线性无关特征向量个数\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-特征值",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r015",
+      "text": "科目：数学一\n知识点：线性代数-相似对角化\n错因：相似变换矩阵 P 的列与特征值顺序对应错位\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-相似对角化",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r016",
+      "text": "科目：数学一\n知识点：线性代数-二次型\n错因：正定判别漏用顺序主子式全大于零的条件\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-二次型",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r017",
+      "text": "科目：数学一\n知识点：概率论-随机事件\n错因：条件概率分母选择错误，样本空间缩小不彻底\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "概率论-随机事件",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r018",
+      "text": "科目：数学一\n知识点：概率论-全概率与贝叶斯\n错因：先验概率与后验概率方向混淆\n状态：mastered\n掌握证据：2026-09-01 延迟 7 天后完成贝叶斯变式题 2 道全对；能用因果方向复述公式含义；错题本回访标记已掌握",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "概率论-全概率与贝叶斯",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r019",
+      "text": "科目：数学一\n知识点：概率论-随机变量\n错因：分布函数右连续性质在求参数时用错方向\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "概率论-随机变量",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r020",
+      "text": "科目：数学一\n知识点：概率论-数字特征\n错因：期望的线性性质在不独立的变量上误加独立性假设\n状态：mastered\n掌握证据：2026-09-03 延迟 8 天后完成协方差与期望联立变式题全对；能区分 E(XY)=E(X)E(Y) 成立的前提；综合题迁移作答正确",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "概率论-数字特征",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r021",
+      "text": "科目：数学一\n知识点：概率论-数理统计\n错因：最大似然估计求导对象搞错（对样本而非参数）\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "概率论-数理统计",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r022",
+      "text": "科目：数学一\n知识点：高等数学-极限与连续\n错因：无穷小阶的比较漏掉高阶项\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-极限与连续",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r023",
+      "text": "科目：数学一\n知识点：线性代数-向量组\n错因：极大无关组选取后的坐标表示写错\n状态：mastered\n掌握证据：2026-09-04 延迟 6 天后完成极大无关组变式题 2 道全对；能解释初等行变换不改变列向量线性关系；错题本回访标记已掌握",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "线性代数-向量组",
+        "status": "mastered",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r024",
+      "text": "科目：数学一\n知识点：高等数学-重积分\n错因：极坐标变换时面积元漏乘 r\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "数学一",
+        "topic": "高等数学-重积分",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r025",
+      "text": "科目：408-操作系统\n知识点：进程管理-调度算法\n错因：周转时间与带权周转时间公式混用\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "进程管理-调度算法",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r026",
+      "text": "科目：408-操作系统\n知识点：进程管理-同步互斥\n错因：生产者消费者问题信号量初值设置错误\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "进程管理-同步互斥",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r027",
+      "text": "科目：408-操作系统\n知识点：进程管理-同步互斥\n错因：P/V 操作顺序颠倒导致死锁\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "进程管理-同步互斥",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r028",
+      "text": "科目：408-操作系统\n知识点：死锁-银行家算法\n错因：安全性检测的序列搜索漏分支\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "死锁-银行家算法",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r029",
+      "text": "科目：408-操作系统\n知识点：死锁-必要条件\n错因：四个必要条件与破坏策略的对应关系记错\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "死锁-必要条件",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r030",
+      "text": "科目：408-操作系统\n知识点：内存管理-页面置换\n错因：LRU 与 FIFO 的缺页数计算过程串页\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "内存管理-页面置换",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r031",
+      "text": "科目：408-操作系统\n知识点：内存管理-分页\n错因：地址变换中页内偏移位数计算错误\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "内存管理-分页",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r032",
+      "text": "科目：408-操作系统\n知识点：内存管理-虚拟内存\n错因：缺页中断处理流程与缺页率的关系理解有偏差\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "内存管理-虚拟内存",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r033",
+      "text": "科目：408-操作系统\n知识点：文件管理-文件系统\n错因：FCB 与索引节点的职责范围混淆\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "文件管理-文件系统",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r034",
+      "text": "科目：408-操作系统\n知识点：文件管理-磁盘调度\n错因：SSTF 与 SCAN 的移动臂道数计算方法用错\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "文件管理-磁盘调度",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r035",
+      "text": "科目：408-操作系统\n知识点：文件管理-空闲空间管理\n错因：位图法中块号与字节位换算错位\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "文件管理-空闲空间管理",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r036",
+      "text": "科目：408-操作系统\n知识点：IO管理-设备分配\n错因：设备独立性的概念题答偏到设备驱动\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "IO管理-设备分配",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r037",
+      "text": "科目：408-操作系统\n知识点：IO管理-中断\n错因：中断处理与进程切换的时序关系混淆\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "IO管理-中断",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r038",
+      "text": "科目：408-操作系统\n知识点：进程管理-进程状态\n错因：五状态模型中阻塞与挂起的转换条件记错\n状态：pending\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "进程管理-进程状态",
+        "status": "pending",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r039",
+      "text": "科目：408-操作系统\n知识点：内存管理-段页式\n错因：段页式地址结构与纯分页混淆\n状态：due\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "内存管理-段页式",
+        "status": "due",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "review:r040",
+      "text": "科目：408-操作系统\n知识点：死锁-检测与解除\n错因：资源分配图化简的约简顺序遗漏\n状态：retesting\n掌握证据：（暂无）",
+      "metadata": {
+        "kind": "review",
+        "subject": "408-操作系统",
+        "topic": "死锁-检测与解除",
+        "status": "retesting",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题队列.json"
+      }
+    },
+    {
+      "doc_id": "md:00-系统/知识库索引.md",
+      "text": "# 知识库索引\n\n> 总索引。Agent 先读本页，再按需打开正文。\n\n## 项目\n\n- [[../20-项目/学习档案|学习档案]] — StudyProfile 1.1，目标 2027 考研（数学一 + 408）\n- [[../20-项目/进度快照|进度快照]] — ProgressSnapshot 1.1，周度复盘\n\n## 知识\n\n- [[../30-知识/错题队列|错题队列]] — ReviewQueue 1.1，40 条（数学一 24 / 408-操作系统 16）\n- 错题笔记：[[../30-知识/错题笔记/数学一/index|数学一索引]] · [[../30-知识/错题笔记/408-操作系统/index|408索引]]\n\n## 真题\n\n- [[../40-真题/真题索引|真题索引]] — 骨架结构，暂无登记条目\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "知识库索引",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\00-系统\\知识库索引.md"
+      }
+    },
+    {
+      "doc_id": "md:20-项目/学习档案.md",
+      "text": "# 学习档案\n\n> 便携学习记录 Schema 1.1（StudyProfile）。本档案为**演示用脱敏虚构数据**。\n\n```json\n{\n  \"schemaVersion\": \"1.1\",\n  \"recordType\": \"StudyProfile\",\n  \"targetExam\": \"2027 考研初试（数学一 + 408计算机 + 英语一 + 政治）\",\n  \"targetDate\": \"2026-12-19\",\n  \"weeklyHours\": 42,\n  \"currentPhase\": \"强化阶段\",\n  \"constraints\": [\n    \"工作日上午有课，整块时间集中在下午与晚间\",\n    \"周末安排套题限时训练\",\n    \"408 需在 10 月中旬前完成第一轮强化\",\n    \"错题复测优先级高于刷新题\"\n  ]\n}\n```\n\n## 说明\n\n- 目标考试覆盖**两个科目族**：数学一（数学科目）与 408（计算机统考），英语一、政治暂未进入错题闭环。\n- 每周 42 小时为上限而非下限；错题队列复测按 `nextRetestDate` / `retestOffsetDays` 驱动。\n- 相关记录：[[进度快照]]、[[../30-知识/错题队列]]\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "学习档案",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\20-项目\\学习档案.md"
+      }
+    },
+    {
+      "doc_id": "md:20-项目/进度快照.md",
+      "text": "# 进度快照\n\n> 便携学习记录 Schema 1.1（ProgressSnapshot），周期 2026-09-07 ~ 2026-09-13。**演示用脱敏虚构数据**。\n\n```json\n{\n  \"schemaVersion\": \"1.1\",\n  \"recordType\": \"ProgressSnapshot\",\n  \"period\": { \"start\": \"2026-09-07\", \"end\": \"2026-09-13\" },\n  \"metrics\": [\n    { \"subject\": \"数学一\", \"name\": \"错题复测完成\", \"unit\": \"道\", \"planned\": 30, \"completed\": 22 },\n    { \"subject\": \"408-操作系统\", \"name\": \"错题复测完成\", \"unit\": \"道\", \"planned\": 20, \"completed\": 16 },\n    { \"subject\": \"数学一\", \"name\": \"套题限时练习\", \"unit\": \"套\", \"planned\": 2, \"completed\": 1 }\n  ],\n  \"accuracy\": [\n    { \"subject\": \"数学一\", \"correct\": 62, \"total\": 80, \"rate\": 0.775 },\n    { \"subject\": \"408-操作系统\", \"correct\": 41, \"total\": 50, \"rate\": 0.82 }\n  ],\n  \"blockers\": [\n    \"级数敛散性判别正确率仍不稳定，需专项\",\n    \"操作系统文件系统章节待二刷\"\n  ]\n}\n```\n\n## 周回顾\n\n- 数学一复测完成率 73%，主要卡在级数与曲线积分两个簇。\n- 408-操作系统复测完成率 80%，死锁簇复测后正确率回升。\n- 相关：[[学习档案]]、[[../30-知识/错题队列]]\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "进度快照",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\20-项目\\进度快照.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/408-操作系统/内存管理簇.md",
+      "text": "---\ntags: [错题, 408, 操作系统, 内存管理]\nrelated: r030, r031, r039\n---\n\n# 内存管理簇（页面置换与地址变换）\n\n> 对应错题队列：`r030`（LRU/FIFO 串页）、`r031`（偏移位数算错）、`r039`（段页式混淆）。**原创虚构示例**。\n\n## 错误表现\n\n- LRU 淘汰\"最近未使用\"，做题时误按先进先出顺序淘汰。\n- 页大小 2KB 时页内偏移应为 11 位，误按 10 位截取。\n- 段页式地址是\"段号 + 页号 + 页内偏移\"三段，误当纯分页两段处理。\n\n## 纠偏动作\n\n- 置换算法手算时**列时间戳表**，不脑补。\n- 地址变换第一步：**先算页内偏移位数 = $\\log_2$(页大小)**，再切高位。\n- 段页式先画地址结构图再动笔。\n\n## 复测记录\n\n- 2026-09-15：`r031` 到期复测。\n- 2026-09-17：`r030` 到期复测。\n- 2026-09-20：`r039` 到期复测。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "内存管理簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\408-操作系统\\内存管理簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/408-操作系统/文件与磁盘簇.md",
+      "text": "---\ntags: [错题, 408, 操作系统, 文件管理]\nrelated: r033, r034, r035\n---\n\n# 文件与磁盘簇\n\n> 对应错题队列：`r033`（FCB 与索引节点）、`r034`（磁盘调度）、`r035`（位图换算）。**原创虚构示例**。\n\n## 错误表现\n\n- FCB 含文件名等目录项信息，索引节点在文件打开后才调入内存——两者职责混淆。\n- SSTF 每次\"最近优先\"，SCAN 沿一个方向扫到底——两算法移动道数计算混用。\n- 位图法：块号 $b$ 对应字节 $b/8$、位 $b\\%8$，换算时错位。\n\n## 纠偏动作\n\n- 概念题先答**\"在磁盘上\"还是\"在内存中\"**再展开。\n- 磁盘调度画数轴，标起点，逐段累加 $|差|$。\n- 位图换算背：**\"除 8 定字节，模 8 定位\"**。\n\n## 复测记录\n\n- 2026-09-19：`r034` 到期复测。\n- 其余按 offset 排期。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "文件与磁盘簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\408-操作系统\\文件与磁盘簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/408-操作系统/死锁簇.md",
+      "text": "---\ntags: [错题, 408, 操作系统, 死锁]\nrelated: r028, r040\n---\n\n# 死锁簇（银行家算法与检测）\n\n> 对应错题队列：`r028`（安全性检测漏分支）、`r040`（资源分配图约简顺序）。**原创虚构示例**。\n\n## 错误表现\n\n- 银行家算法安全性检测时只试了一条序列，漏掉其他可满足分支即下\"不安全\"结论。\n- 资源分配图化简时未先约简\"非阻塞\"进程，顺序混乱。\n\n## 纠偏动作\n\n- 安全性检测：**逐个尝试所有可满足进程**，记录已用表，直至无进程可满足才下结论。\n- 图化简口诀：**\"先找能跑完的，跑完收资源，循环到不能跑\"**。\n\n## 复测记录\n\n- 2026-09-14：`r028` 到期复测。\n- 2026-09-16：`r040` 到期复测。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "死锁簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\408-操作系统\\死锁簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/408-操作系统/进程管理簇.md",
+      "text": "---\ntags: [错题, 408, 操作系统, 进程管理]\nrelated: r025, r026, r027, r038\n---\n\n# 进程管理簇（调度与同步互斥）\n\n> 对应错题队列：`r025`（周转时间公式）、`r026`（信号量初值）、`r027`（P/V 顺序）、`r038`（五状态转换）。**原创虚构示例**。\n\n## 错误表现\n\n- 带权周转时间 = 周转时间 / 服务时间，误除以到达序号。\n- 生产者消费者：互斥信号量初值应为 1，同步信号量按缓冲区容量/产品数设初值，本题设反。\n- 先 P(互斥) 再 P(同步) 会死锁，顺序颠倒。\n- 阻塞→挂起（活动就绪）与阻塞→就绪的触发条件记错。\n\n## 纠偏动作\n\n- 公式卡片：周转 = 完成 − 到达；带权 = 周转 / 服务。\n- 信号量设计三问：**保护什么？同步什么？初值各是几？**\n- 口诀：**\"先同步后互斥\"**。\n\n## 复测记录\n\n- 2026-09-16：`r025` 到期复测。\n- 其余条目按 offset 排期。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "进程管理簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\408-操作系统\\进程管理簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/数学一/曲线积分与重积分计算簇.md",
+      "text": "---\ntags: [错题, 数学一, 高等数学]\nrelated: r006, r024\n---\n\n# 曲线积分与重积分计算簇\n\n> 对应错题队列：`r006`（格林公式方向取反）、`r024`（极坐标漏 r）。**原创虚构示例**。\n\n## 错误表现\n\n- 格林公式要求边界取正向（沿边界走，区域在左侧），题中反向时漏加负号。\n- 极坐标变换 $\\mathrm{d}x\\,\\mathrm{d}y = r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$ 漏乘 $r$。\n\n## 纠偏动作\n\n- 格林公式使用前画边界箭头，非正向先补负号。\n- 写极坐标时第一行先写 $r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta$，形成肌肉记忆。\n\n## 复测记录\n\n- 2026-09-18：`r024` 到期复测。\n- `r006` 待排期（offset 14 天）。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "数学一",
+        "topic": "曲线积分与重积分计算簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\数学一\\曲线积分与重积分计算簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/数学一/条件概率与贝叶斯簇.md",
+      "text": "---\ntags: [错题, 数学一, 概率论]\nrelated: r017, r018\n---\n\n# 条件概率与贝叶斯簇\n\n> 对应错题队列：`r017`（分母选择）、`r018`（先验后验）。**原创虚构示例**。\n\n## 错误表现\n\n- 求 $P(A|B)$ 时分母仍用全样本空间，样本空间缩小不彻底。\n- 贝叶斯公式代入时把先验写在分子。\n\n## 纠偏动作\n\n- 口诀：**\"给定了谁，谁做分母\"**。\n- 贝叶斯方向自检：答案必须随先验单调——先验越大后验越大，否则方向反了。\n\n## 复测记录\n\n- 2026-09-01：贝叶斯变式 2 道全对，`r018` 标 `mastered`。\n- 2026-09-14：`r017` 到期复测。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "数学一",
+        "topic": "条件概率与贝叶斯簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\数学一\\条件概率与贝叶斯簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/数学一/相似对角化簇.md",
+      "text": "---\ntags: [错题, 数学一, 线性代数]\nrelated: r014, r015\n---\n\n# 相似对角化簇\n\n> 对应错题队列：`r014`（可对角化判定漏重根检查）、`r015`（P 列与特征值错位）。**原创虚构示例**。\n\n## 错误表现\n\n- 判定可对角化只看特征值个数，不看重根特征值对应的线性无关特征向量个数是否等于重数。\n- 写 $P$ 时列向量顺序与对角矩阵特征值顺序不对应。\n\n## 纠偏动作\n\n- 检查清单：**每个特征值，几何重数 = 代数重数？**\n- 约定书写：$P=(p_1,p_2,\\dots,p_n)$ 列顺序与 $\\Lambda$ 对角线一一对应，写完回代验算 $AP=P\\Lambda$。\n\n## 复测记录\n\n- 2026-09-15：`r014` 到期复测。\n- `r015` 待排期（offset 10 天）。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "数学一",
+        "topic": "相似对角化簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\数学一\\相似对角化簇.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/错题笔记/数学一/级数敛散性判别簇.md",
+      "text": "---\ntags: [错题, 数学一, 级数]\nrelated: r008, r009\n---\n\n# 级数敛散性判别簇\n\n> 对应错题队列：`r008`（判别法选择）、`r009`（莱布尼茨漏验单调性）。**原创虚构示例**。\n\n## 错误表现\n\n- 通项含阶乘时仍先用比较判别法，绕远路。\n- 交错级数只验证了通项趋于 0，漏验单调递减。\n\n## 判别法选择树（自建口诀）\n\n1. 通项含 $n!$ 或 $a^n$ → 先试比值判别法\n2. 通项是 $p$ 次多项式比值 → 比较判别法（抓主项）\n3. 交错级数 → 莱布尼茨：**递减 + 趋零，两验缺一不可**\n4. 含 $\\sin/\\ln$ 混合 → 先泰勒展开看阶\n\n## 复测记录\n\n- 2026-08-30：变式题 3 道全对，`r008` 已标 `mastered`。\n- 2026-09-17：`r009` 到期复测，重点验单调性书写。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "数学一",
+        "topic": "级数敛散性判别簇",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\错题笔记\\数学一\\级数敛散性判别簇.md"
+      }
+    },
+    {
+      "doc_id": "md:40-真题/真题索引.md",
+      "text": "# 真题索引\n\n> 真题知识 Schema 1.0 的索引页。**演示 Vault 不登记任何真实试卷**，仅保留结构。\n\n## 登记规则（摘要）\n\n- 每条来源先经许可判断（官方公开 / 用户持有授权），登记 `dedupeKey` 防重。\n- 年度页同时记录 `paperYear` 与 `examDate`。\n- 只有许可证允许时才保存题面；原创解析默认可存。\n\n## 目录结构\n\n```\n40-真题/\n├── 真题索引.md          # 本页\n├── 数学一/              # 2010—2026 年度页（演示为空）\n├── 数学二/\n├── 英语一/\n├── 英语二/\n└── 408/\n```\n\n## 已登记条目\n\n（无。演示环境不收录真实真题。）\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "408-操作系统",
+        "topic": "真题索引",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\40-真题\\真题索引.md"
+      }
+    },
+    {
+      "doc_id": "md:AGENTS.md",
+      "text": "# AGENTS.md — 演示 Vault 使用说明\n\n本目录是「学习副驾 Study Copilot」的**脱敏演示 Vault**，所有数据均为原创虚构，用于比赛演示与端侧检索冒烟测试。\n\n## 目录结构\n\n```\ndemo-vault/\n├── AGENTS.md            # 本文件\n├── 00-系统/知识库索引.md  # 总索引\n├── 20-项目/              # 学习档案、进度快照\n├── 30-知识/              # 错题队列.json + 错题笔记/\n└── 40-真题/真题索引.md    # 真题索引骨架（不含真实试卷数据）\n```\n\n## 给 Agent 的规则（摘要，全文见插件内 obsidian-brain-contract.md）\n\n1. 检索优先级：`20-项目/` → `30-知识/` → `40-真题/`；先读索引摘要，再打开必要正文；单轮最多 8 篇 / 16,000 字符。\n2. 写入前重读目标文件，内容变化时合并，不覆盖。\n3. 计划只能写 `planned`；推测错因标 `hypothesis`，有复测证据后才标 `confirmed` / 掌握。\n4. 不保存整段对话、凭据、身份信息、未授权题库或第三方解析。\n5. 用户说「只读模式」时可检索禁止写入。\n\n## 端侧检索\n\n错题队列与笔记可由 `scripts/local_retrieval/embed_index.py` 建立本地向量索引（写入 `30-知识/.index/`，不上传）。详见插件内 local-semantic-retrieval-contract.md。\n",
+      "metadata": {
+        "kind": "note",
+        "subject": null,
+        "topic": "AGENTS",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\AGENTS.md"
+      }
+    }
+  ]
+}

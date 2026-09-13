@@ -1,0 +1,47 @@
+# AI 技术实践说明
+
+> 对应比赛要求「AI 实践需真实可验证」与「端云协同可获技术加分」。本文按**实际使用范围如实描述**，所有佐证可在仓库与作品包中核对。
+
+## 一、AI 能力总览
+
+| 层 | 技术 | 作用 | 佐证位置 |
+| --- | --- | --- | --- |
+| 云端推理（主链路） | 宿主 Agent 自身大模型 | 14 个学习 Skill 的常规讲解、规划、诊断 | 演示视频、对话截图 |
+| 云端推理（专项链路） | **阿里云 Qwen（DashScope，qwen-flash / qwen-plus）** | 错题陪练：变式复测出题 + 二次精讲 | `logs/qwen/*.json` 调用留痕、API 调用截图 |
+| 端侧推理（AI PC） | **bge-small-zh-v1.5（ONNX，CPU）本地 embedding** | 错题队列与 Vault 笔记的语义向量索引与相似检索 | `.index/` 产物、检索输出截图 |
+| 开发辅助 | GLM 辅助编码 | 本仓库代码与文档的开发过程辅助（如实披露） | 提交历史、开发过程记录 |
+
+## 二、端云协同分工（技术加分项）
+
+学习副驾把一次「错题陪练」拆成端云两段：
+
+1. **端侧（本地 AI PC，无数据出域）**：
+   - `scripts/local_retrieval/embed_index.py` 用本地 CPU 运行的 bge-small-zh 模型，把用户的错题队列（ReviewQueue）与 Vault 笔记编码为向量索引；
+   - `semantic_search.py` 对新错题做语义召回，找出"历史上是否犯过同类错误"；
+   - 全程本地计算，索引存于本地 `.index/`，不上传任何学习数据。
+2. **云端（DashScope Qwen）**：
+   - 拿到端侧召回的错题簇后，`scripts/qwen_engine.py` 调用 Qwen 生成变式复测题与二次精讲；
+   - 只发送学科文本（知识点、错因描述），不发送个人数据；
+   - 每次调用自动留痕（消息、回复、token 用量、时延）写入 `logs/qwen/`。
+3. **协同价值**：端侧解决"数据在本地、检索要语义"，云端解决"长文本推理与出题质量"；任一端不可用均有降级路径（端侧未就绪→跳过检索；云端无 Key→会话内出题），不阻塞学习。
+
+## 三、Qwen 专项链路（对齐特别赛题）
+
+- 链路：`错题闭环（kaoyan-error-loop-coach）→ Qwen 陪练（kaoyan-qwen-drill）→ 进度诊断`
+- Qwen 在作品中的角色是**认知增强**：把用户的错误模式变成可复测的原创变式题，并用二次精讲对照错因逐条回应。
+- 调用纪律：先 `--dry-run` 预览请求体，确认无个人信息后真实调用；默认低成本模型 qwen-flash。
+
+## 四、佐证清单（作品包 AI实践验证文件夹/）
+
+1. `logs/qwen/` 真实调用留痕 JSON（消息、回复、usage、时延）
+2. Qwen API 调用成功截图（DashScope 控制台用量页 + 引擎输出）
+3. 端侧检索真实运行截图（embed_index 建索引 + semantic_search 查询输出）
+4. 关键代码：`scripts/qwen_engine.py`、`scripts/local_retrieval/`（本仓库）
+5. Prompt 设计：`kaoyan-qwen-drill/SKILL.md` 流程节 + 引擎 `--system/--prompt`
+6. 测试记录：`python -m pytest tests/ -q`（18 passed）输出
+7. 数据 Schema 校验记录：演示 Vault 三个 JSON 通过 jsonschema 校验
+
+## 五、真实性声明
+
+- 所有 `[Qwen生成]` 标注均对应真实 API 调用及其留痕；云端不可用时作品会明示降级，不伪造生成标注。
+- 演示 Vault 全部数据为原创虚构，不含任何真实考题。
