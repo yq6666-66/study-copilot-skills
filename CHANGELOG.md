@@ -2,6 +2,13 @@
 
 本项目所有条目的依据：git 提交历史（公开）、`logs/qwen/` 调用留痕（25 份）、GitHub Actions 运行记录（run ID 公开可查）、`docs/competition/Qwen会话优化实录.md`（逐轮明细）。
 
+## v1.8 — 2026-09-14（第十三轮：功能扩展）
+
+### 新增
+- `scripts/scheduler.py`：FSRS 间隔复习调度器（遗忘曲线/初始稳定性/均值回归阻尼/期望保持率反解间隔；公式逐行对照 open-spaced-repetition/fsrs-rs 源码；错题队列集成含 bootstrap 显式标记），8 测试。
+- `scripts/study_report.py`：学习周报生成器（掌握概览/错题热点/7 天 FSRS 负载/可选 Qwen 洞察段），3 测试；示例 `docs/competition/学习周报示例.md`（洞察段第 27 次留痕 `20260914-034212`）。
+- 数字门禁实战：新留痕后捕获 9 处文档计数漂移并全量修复（27 次 / 70,224 tokens / ×21+×6）。71 tests。
+
 ## v1.7 — 2026-09-14（第十二轮：数字一致性门禁）
 
 ### 新增
