@@ -127,6 +127,24 @@ def build_evidence(ev: Path) -> None:
     (tdir / "pytest输出.txt").write_text(
         _capture(pytest.main, ["pytest", "tests/", "-q"]), encoding="utf-8")
 
+    # 06 DashScope 控制台用量佐证（平台侧官方记录，与 logs/qwen 交叉核验）
+    console_src = REPO / "docs" / "competition" / "控制台用量"
+    if console_src.exists():
+        cdir = ev / "06-DashScope控制台用量"
+        cdir.mkdir(parents=True)
+        for img in sorted(console_src.glob("*.png")):
+            shutil.copy2(img, cdir / img.name)
+        (cdir / "说明.md").write_text(
+            "# 控制台用量佐证说明\n\n"
+            "本目录两张截图来自千问AI平台（DashScope）「用量分析→按量付费」官方页面（2026-09-14）：\n"
+            "- 01-用量总览.png：近 1 周 390 请求 / 226.9M tokens / 成功率 100.0%；模型分项 "
+            "qwen3.8-max 282 次、qwen3.8-flash 281 次（平均延迟 26.9s）、qwen-flash 27 次，均 100% 成功。\n"
+            "- 02-调用日志.png：逐条 Request ID / 模型 / token 明细（共 392 条，含输入/输出/图片 token 与时延）。\n\n"
+            "**口径区分（重要）**：本作品包代码链路产生的调用为 32 次（`logs/qwen/` 逐一留痕，"
+            "qwen-flash ×26 + qwen3.8-flash ×6），是上述控制台总量的真子集；"
+            "其余为开发过程中以 Qwen 模型作为编程会话引擎产生的用量（qwen3.8-max 等）。"
+            "两类用途在《AI技术实践说明》中分别披露，不混用、不夸大。\n", encoding="utf-8")
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="组装参赛作品包")
