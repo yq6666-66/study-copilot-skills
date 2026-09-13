@@ -111,3 +111,32 @@ def test_secret_assertion_blocks_log(monkeypatch, key_env, tmp_log):
     monkeypatch.setattr(qwen_engine.requests, "post", echo_key)
     with pytest.raises(AssertionError):
         qwen_engine.call_qwen([{"role": "user", "content": "x"}])
+
+
+def test_stats_aggregates_logs(tmp_log):
+    tmp_log.mkdir(parents=True, exist_ok=True)
+    (tmp_log / "a.json").write_text(json.dumps({
+        "model": "qwen-flash", "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15},
+        "latency_ms": 1000, "finish_reason": "stop"}), encoding="utf-8")
+    (tmp_log / "b.json").write_text(json.dumps({
+        "model": "qwen3.8-flash", "usage": {"total_tokens": 200},
+        "latency_ms": 3000, "finish_reason": "stop"}), encoding="utf-8")
+    (tmp_log / "broken.json").write_text("{坏文件", encoding="utf-8")
+    s = qwen_engine.stats(tmp_log)
+    assert s["calls"] == 2  # 损坏文件跳过
+    assert s["total_tokens"] == 215
+    assert s["by_model"]["qwen-flash"]["calls"] == 1
+    assert s["by_model"]["qwen3.8-flash"]["total_tokens"] == 200
+    assert s["latency_ms"] == {"min": 1000, "max": 3000, "avg": 2000}
+    assert s["api_key_leaked_logs"] == 0
+
+
+def test_stats_cli(monkeypatch, capsys):
+    import pathlib
+    real = qwen_engine.stats
+    monkeypatch.setattr(qwen_engine, "stats",
+                        lambda log_dir=pathlib.Path("."): {"calls": 3, "by_model": {}})
+    sys.argv = ["qwen_engine.py", "--stats"]
+    assert qwen_engine.main() == 0
+    out = capsys.readouterr().out
+    assert '"calls": 3' in out

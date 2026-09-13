@@ -152,6 +152,45 @@ def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: flo
             "finish_reason": finish_reason, "model": model, "log_path": str(log_path) if log_path else None}
 
 
+def stats(log_dir: Path = LOG_DIR) -> dict:
+    """聚合全部调用留痕：按模型统计次数/token/时延分布与 finish_reason；复核日志不含 Key。"""
+    if not log_dir.exists():
+        return {"calls": 0, "note": "无留痕目录", "by_model": {}}
+    api_key = os.environ.get("DASHSCOPE_API_KEY") or _registry_key() or ""
+    total = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    by_model: dict = {}
+    latencies: list = []
+    key_leak = 0
+    for f in sorted(log_dir.glob("*.json")):
+        try:
+            record = json.loads(f.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        m = record.get("model") or "unknown"
+        usage = record.get("usage") or {}
+        slot = by_model.setdefault(m, {"calls": 0, "total_tokens": 0})
+        slot["calls"] += 1
+        slot["total_tokens"] += usage.get("total_tokens") or 0
+        total["calls"] += 1
+        total["prompt_tokens"] += usage.get("prompt_tokens") or 0
+        total["completion_tokens"] += usage.get("completion_tokens") or 0
+        total["total_tokens"] += usage.get("total_tokens") or 0
+        if record.get("finish_reason"):
+            fr = by_model[m].setdefault("finish_reasons", {})
+            fr[record["finish_reason"]] = fr.get(record["finish_reason"], 0) + 1
+        if record.get("latency_ms"):
+            latencies.append(record["latency_ms"])
+        if api_key and api_key in f.read_text(encoding="utf-8"):
+            key_leak += 1
+    out = dict(total)
+    out["by_model"] = by_model
+    if latencies:
+        out["latency_ms"] = {"min": min(latencies), "max": max(latencies),
+                             "avg": round(sum(latencies) / len(latencies))}
+    out["api_key_leaked_logs"] = key_leak
+    return out
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="云端 Qwen 引擎（DashScope 兼容接口，调用全留痕）")
     parser.add_argument("--model", default=DEFAULT_MODEL)
@@ -163,7 +202,13 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="只打印将发送的请求体，不联网")
     parser.add_argument("--no-log", action="store_true", help="本次调用不留痕")
     parser.add_argument("--json", action="store_true", help="输出完整 JSON（含日志路径）")
+    parser.add_argument("--stats", action="store_true",
+                        help="聚合 logs/qwen/ 全部留痕的统计（不发请求）")
     args = parser.parse_args()
+
+    if args.stats:
+        print(json.dumps(stats(), ensure_ascii=False, indent=2))
+        return 0
 
     try:
         messages = build_messages(args.system, args.prompt, args.messages_file)
