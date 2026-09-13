@@ -2,7 +2,7 @@
 
 > 装进任何 AI Agent 的通用学习认知引擎 —— 任何宿主 Agent × 任何科目，预置考研包。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![CI](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![CI](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml) [English](docs/README.en.md)
 
 **学习副驾**是一套纯 Skills 的学习认知引擎：不依赖任何后台服务，把它装进你的 AI Agent（Codex、Claude Code 等），Agent 就拥有跨会话的学习记忆、错题闭环、间隔复测、学习规划、进度诊断与原创模考能力。
 
@@ -25,7 +25,7 @@
 
 ## Qwen 使用实录
 
-以下 **25 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
+以下 **26 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
 
 | # | 链路 | 入库实物 | 留痕 |
 |---|------|----------|------|
@@ -54,8 +54,9 @@
 | 23 | 演示管道全链路（端侧召回→变式题） | `scripts/demo_pipeline.py` 实跑产出 | `20260914-005709` |
 | 24 | 架构文档初稿（qwen3.8-flash） | `docs/ARCHITECTURE.md`（人工审校删 1 处幻觉叙述） | `20260914-014216` |
 | 25 | CLI 错误文案评审（qwen3.8-flash） | 评审建议 3 条采纳 + 抓出埋入的事实错误 | `20260914-020602` |
+| 26 | 英文 README 初稿（qwen-flash） | `docs/README.en.md`（人工审校修 4 处过时数字） | `20260914-030050` |
 
-覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×19、`qwen3.8-flash` ×6。
+覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×20、`qwen3.8-flash` ×6。
 
 ### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
 
@@ -121,7 +122,7 @@ study-copilot-skills/
 └── tests/                     # pytest 测试
 ```
 
-## 13 个主责 Skill
+## 15 个主责 Skill
 
 | Skill | 主责意图 |
 | --- | --- |
@@ -138,8 +139,10 @@ study-copilot-skills/
 | `kaoyan-past-paper-analyst` | 分析已提供或已核验可访问的真题样本 |
 | `kaoyan-material-study-assistant` | 把用户材料转成摘要、卡片、提纲或原创练习 |
 | `kaoyan-official-info-researcher` | 核验当年招考信息与录取数据 |
+| `kaoyan-qwen-drill` | 云端 Qwen 错题陪练：变式复测出题与二次精讲 |
+| `kaoyan-subject-onboarding` | 新科目接入向导：生成科目配置包并验证机制层零改动 |
 
-> 学科命名中的「考研/408」是历史沿革；机制层科目无关，泛化改造按科目配置层推进（见 M1 里程碑）。
+> 学科命名中的「考研/408」是历史沿革；机制层科目无关，泛化改造按科目配置层推进。
 
 ## 推荐串联
 
