@@ -6,6 +6,8 @@
 
 **学习副驾**是一套纯 Skills 的学习认知引擎：不依赖任何后台服务，把它装进你的 AI Agent（Codex、Claude Code 等），Agent 就拥有跨会话的学习记忆、错题闭环、间隔复测、学习规划、进度诊断与原创模考能力。
 
+> 仓库：https://github.com/yq6666-66/study-copilot-skills ｜ 前作（408考研插件 v2.4.0）：https://github.com/yq6666-66/408-codex-plugin
+
 前身是 [408考研插件](https://github.com/yq6666-66/408-codex-plugin)（kaoyan-408 v2.4.0）。本项目的核心升级是把学习机制从「考研专用」泛化为两层通用：
 
 1. **任何 Agent** —— Skills 核心与宿主解耦，通过适配层安装到不同 AI Agent。
@@ -43,14 +45,15 @@
 
 ## 快速开始
 
-（安装器开发中，M1 里程碑完成后此节可用）
-
 ```bash
-# Codex
-python install.py --host codex
+git clone https://github.com/yq6666-66/study-copilot-skills.git
+cd study-copilot-skills
 
-# Claude Code
-python install.py --host claude-code
+# 任一宿主（自动探测 Codex / Claude Code；--dry-run 先预览）
+python install.py --host auto --dry-run
+python install.py --host claude-code     # 装到 ~/.claude/skills/（Codex 用户: --host codex）
+
+# 5 分钟体验路径见 docs/competition/体验说明.md
 ```
 
 ## 目录结构
