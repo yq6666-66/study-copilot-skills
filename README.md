@@ -21,11 +21,13 @@
 - 📝 **原创模考**：冻结题面组织模考，交卷前不讲题
 - 🧠 **本地学习记忆**：可选接入用户自己的 Obsidian Vault，跨会话记忆只存本地
 - 🔍 **端侧语义检索**（新增）：本地 CPU 运行 embedding 模型，为错题队列/真题索引做语义检索，与云端大模型协同
-- 📦 **科目配置驱动**（新增）：`subjects/` 预置考研包；法考、CPA、高考等新科目由 `subject-onboarding` 向导接入
+- 📦 **科目配置驱动**：`subjects/` 预置考研包；法考、CPA、高考等新科目由 `subject-onboarding` 向导接入
+- ⏱️ **FSRS 间隔复习调度**（新增）：`scripts/scheduler.py` 实现开源 FSRS 核心（遗忘曲线/初始稳定性/均值回归阻尼，引用 open-spaced-repetition/fsrs-rs），为每条错题算建议复习日与今日可提取概率
+- 📈 **学习周报生成器**（新增）：`scripts/study_report.py` 产出周报（掌握概览/错题热点/7 天 FSRS 负载），洞察段由云端 Qwen 生成并留痕（示例见 `docs/competition/学习周报示例.md`）
 
 ## Qwen 使用实录
 
-以下 **26 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
+以下 **27 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
 
 | # | 链路 | 入库实物 | 留痕 |
 |---|------|----------|------|
@@ -55,8 +57,9 @@
 | 24 | 架构文档初稿（qwen3.8-flash） | `docs/ARCHITECTURE.md`（人工审校删 1 处幻觉叙述） | `20260914-014216` |
 | 25 | CLI 错误文案评审（qwen3.8-flash） | 评审建议 3 条采纳 + 抓出埋入的事实错误 | `20260914-020602` |
 | 26 | 英文 README 初稿（qwen-flash） | `docs/README.en.md`（人工审校修 4 处过时数字） | `20260914-030050` |
+| 27 | 学习周报洞察段（qwen-flash） | `docs/competition/学习周报示例.md`（FSRS 调度 + Qwen 洞察） | `20260914-034212` |
 
-覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×20、`qwen3.8-flash` ×6。
+覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×21、`qwen3.8-flash` ×6。
 
 ### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
 
