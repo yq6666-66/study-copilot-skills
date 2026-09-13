@@ -2,7 +2,7 @@
 
 > 装进任何 AI Agent 的通用学习认知引擎 —— 任何宿主 Agent × 任何科目，预置考研包。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![CI](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/yq6666-66/study-copilot-skills/actions/workflows/ci.yml)
 
 **学习副驾**是一套纯 Skills 的学习认知引擎：不依赖任何后台服务，把它装进你的 AI Agent（Codex、Claude Code 等），Agent 就拥有跨会话的学习记忆、错题闭环、间隔复测、学习规划、进度诊断与原创模考能力。
 
@@ -89,6 +89,9 @@ cd study-copilot-skills
 # 任一宿主（自动探测 Codex / Claude Code；--dry-run 先预览）
 python install.py --host auto --dry-run
 python install.py --host claude-code     # 装到 ~/.claude/skills/（Codex 用户: --host codex）
+
+# 校验数据资产（Schema 1.1 + 科目配置）
+python scripts/validate_records.py
 
 # 5 分钟体验路径见 docs/competition/体验说明.md
 ```

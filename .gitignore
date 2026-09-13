@@ -6,7 +6,10 @@ venv/
 
 # Models & indexes (large binaries, rebuilt by embed_index.py)
 models/
+.index/
+*.npy
 plugins/study-copilot/.index/
+demo-vault/**/.index/
 *.onnx
 
 # Logs (local evidence only, never committed)
