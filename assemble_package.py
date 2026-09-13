@@ -158,6 +158,9 @@ def main() -> int:
 
     build_evidence(ev)
     shutil.copy2(REPO / "docs/competition/体验说明.md", pkg / "体验说明.md")
+    overview = REPO / "docs/competition/千问证据总览.md"
+    if overview.exists():
+        shutil.copy2(overview, pkg / "千问证据总览.md")  # ZIP 根层：解压第一眼
 
     zip_path = DIST / "学习副驾_{}.zip".format(args.name)
     if zip_path.exists():

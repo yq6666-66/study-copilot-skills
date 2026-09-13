@@ -1,8 +1,8 @@
 {
   "model": "BAAI/bge-small-zh-v1.5",
   "dim": 512,
-  "built_at": "2026-09-13T23:08:17+0800",
-  "count": 53,
+  "built_at": "2026-09-13T23:19:20+0800",
+  "count": 55,
   "docs": [
     {
       "doc_id": "review:r001",
@@ -446,7 +446,7 @@
     },
     {
       "doc_id": "md:00-系统/知识库索引.md",
-      "text": "# 知识库索引\n\n> 总索引。Agent 先读本页，再按需打开正文。\n\n## 项目\n\n- [[../20-项目/学习档案|学习档案]] — StudyProfile 1.1，目标 2027 考研（数学一 + 408）\n- [[../20-项目/进度快照|进度快照]] — ProgressSnapshot 1.1，周度复盘\n\n## 知识\n\n- [[../30-知识/错题队列|错题队列]] — ReviewQueue 1.1，40 条（数学一 24 / 408-操作系统 16）\n- 错题笔记：[[../30-知识/错题笔记/数学一/index|数学一索引]] · [[../30-知识/错题笔记/408-操作系统/index|408索引]]\n\n## 真题\n\n- [[../40-真题/真题索引|真题索引]] — 骨架结构，暂无登记条目\n",
+      "text": "# 知识库索引\n\n> 总索引。Agent 先读本页，再按需打开正文。\n\n## 项目\n\n- [[../20-项目/学习档案|学习档案]] — StudyProfile 1.1，目标 2027 考研（数学一 + 408）\n- [[../20-项目/进度快照|进度快照]] — ProgressSnapshot 1.1，周度复盘\n\n## 知识\n\n- [[../30-知识/错题队列|错题队列]] — ReviewQueue 1.1，40 条（数学一 24 / 408-操作系统 16）\n- 错题笔记：[[../30-知识/错题笔记/数学一/index|数学一索引]] · [[../30-知识/错题笔记/408-操作系统/index|408索引]]\n- 原创练习（[原创练习][Qwen生成]）：[[../30-知识/原创练习/原创练习集01|练习集 01]] · [[../30-知识/原创练习/英语一写作练习|英语一写作]]\n\n## 真题\n\n- [[../40-真题/真题索引|真题索引]] — 骨架结构，暂无登记条目\n",
       "metadata": {
         "kind": "note",
         "subject": "408-操作系统",
@@ -472,6 +472,26 @@
         "subject": "408-操作系统",
         "topic": "进度快照",
         "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\20-项目\\进度快照.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/原创练习/原创练习集01.md",
+      "text": "---\ntags: [原创练习, Qwen生成]\nrelated: 级数敛散性判别簇, 死锁簇\n---\n\n# 原创练习集 01\n\n> [原创练习][Qwen生成] 由云端 Qwen（qwen-flash）真实生成，调用留痕：`logs/qwen/20260913-231704-qwen-flash.json`。作答前请勿查看解析。\n\n# 原创练习集 01\n\n---\n\n### **题1（数学一 · 级数敛散性判别）**\n\n**题目：**  \n判断级数 $\\sum_{n=2}^{\\infty} \\frac{(-1)^n}{\\sqrt{n} + (-1)^n}$ 的敛散性。\n\n**答案：**  \n该级数收敛，但非绝对收敛。\n\n**解析：**  \n1. **拆项分析**：将通项改写为 $\\frac{(-1)^n}{\\sqrt{n} + (-1)^n} = \\frac{(-1)^n}{\\sqrt{n}} \\cdot \\frac{1}{1 + \\frac{(-1)^n}{\\sqrt{n}}}$，利用等价无穷小近似 $ \\frac{1}{1 + x} \\approx 1 - x $（当 $x \\to 0$），得通项近似为 $\\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + o\\left(\\frac{1}{n}\\right)$。  \n2. **分离主部**：原级数可表示为 $\\sum \\left( \\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + r_n \\right)$，其中 $r_n = o\\left(\\frac{1}{n}\\right)$。  \n3. **判别收敛性**：$\\sum \\frac{(-1)^n}{\\sqrt{n}}$ 满足交错级数莱布尼茨条件，故收敛；而 $\\sum \\frac{1}{n}$ 发散，因此整体不绝对收敛；但两部分组合后，负项被抵消部分，通过**阿贝尔判别法或狄利克雷判别法**可证其收敛。综上，该级数为**条件收敛**。\n\n> ✅ 考查知识点：交错级数与非绝对收敛的判别、泰勒展开与等价替换应用  \n> ⚠️ 针对错因：误认为“含 $(-1)^n$”即为交错级数直接可用莱布尼茨判别；忽略分母扰动对敛散性的实质性影响。\n\n---\n\n### **题2（数学一 · 二重积分极坐标计算）**\n\n**题目：**  \n计算二重积分 $\\iint_D \\frac{x^2 + y^2}{\\sqrt{1 + x^2 + y^2}} \\, dxdy$，其中区域 $D$ 是由圆 $x^2 + y^2 = 4$ 与直线 $y = x$ 围成的在第一象限的部分。\n\n**答案：**  \n$\\frac{8}{3}(2\\sqrt{5} - 1)$\n\n**解析：**  \n1. **换元至极坐标**：令 $x = r\\cos\\theta$, $y = r\\sin\\theta$，则 $x^2 + y^2 = r^2$，面积元 $dxdy = r dr d\\theta$，被积函数变为 $\\frac{r^2}{\\sqrt{1 + r^2}} \\cdot r = \\frac{r^3}{\\sqrt{1 + r^2}}$。  \n2. **确定积分区域**：第一象限中 $y = x$ 对应 $\\theta = \\frac{\\pi}{4}$，边界 $r = 2$，故 $\\theta \\in \\left[0, \\frac{\\pi}{4}\\right]$，$r \\in [0, 2]$。  \n3. **计算积分**：  \n$$\n\\int_0^{\\pi/4} \\int_0^2 \\frac{r^3}{\\sqrt{1 + r^2}} \\, dr d\\theta = \\frac{\\pi}{4} \\int_0^2 \\frac{r^3}{\\sqrt{1 + r^2}} dr\n$$  \n令 $u = 1 + r^2$，则 $du = 2r dr$，$r^2 = u - 1$，$r^3 dr = r^2 \\cdot r dr = (u - 1)\\cdot \\frac{1}{2} du$，积分变为：  \n$$\n\\frac{\\pi}{4} \\cdot \\frac{1}{2} \\int_{u=1}^{5} \\frac{u - 1}{\\sqrt{u}} du = \\frac{\\pi}{8} \\int_1^5 \\left( \\sqrt{u} - \\frac{1}{\\sqrt{u}} \\right) du = \\frac{\\pi}{8} \\left[ \\frac{2}{3}u^{3/2} - 2u^{1/2} \\right]_1^5\n$$  \n代入计算得最终结果 $\\frac{8}{3}(2\\sqrt{5} - 1)$。\n\n> ✅ 考查知",
+      "metadata": {
+        "kind": "note",
+        "subject": "数学一",
+        "topic": "原创练习集01",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\原创练习\\原创练习集01.md"
+      }
+    },
+    {
+      "doc_id": "md:30-知识/原创练习/英语一写作练习.md",
+      "text": "---\ntags: [原创练习, Qwen生成, 英语一]\n---\n\n# 英语一写作原创练习\n\n> [原创练习][Qwen生成] 由云端 Qwen（qwen-flash）真实生成，调用留痕：`logs/qwen/20260913-231711-qwen-flash.json`。\n\n# 英语一写作原创练习\n\n## 图画文字描述  \n一幅漫画描绘了在一所现代大学校园里，一位年轻学生正坐在图书馆外的长椅上，低头专注地刷手机。他的面前摊开着一本厚重的教材，书页几乎未翻动；而手机屏幕上显示的是一个短视频平台的界面，内容是“如何在3分钟内背完100个单词”的夸张标题。背景中，几位同学在远处自习室门口匆匆走过，神情疲惫却仍带着学习的执着。天空灰蒙蒙的，仿佛象征着信息过载与精神焦虑。画面右下角有一行小字：“真正的学习，从不靠速成。”\n\n---\n\n## 写作任务要求  \n请根据上述图画，撰写一篇不少于160词的短文，内容需包括以下三点：  \n1. 描述图画中的主要场景与人物行为；  \n2. 分析该现象背后反映的社会心理或教育问题；  \n3. 阐述你对“高效学习”与“真实成长”之间关系的看法，并提出合理建议。\n\n---\n\n## 写作提纲骨架  \n\n**引言段（Introduction）**  \n- 简要描述图画内容，引出主题：表面“高效”的学习方式与深层学习质量之间的矛盾。  \n- 提出核心观点：真正的成长源于持续投入而非速成幻想。\n\n**主体段一（Body 1）**  \n- 分析现象：年轻人沉迷“速成捷径”，如短视频、碎片化知识，追求即时满足。  \n- 指出其危害：削弱深度思考能力，导致认知浅层化，难以形成系统性知识结构。\n\n**主体段二（Body 2）**  \n- 引申社会心理：在竞争压力下，人们渴望“快速成功”，但忽视过程价值。  \n- 结合现实：社交媒体放大焦虑，制造“别人学得快我却落后”的错觉。\n\n**结论段（Conclusion）**  \n- 重申观点：学习的本质是时间沉淀与内在积累。  \n- 建议：倡导“慢学习”理念，培养专注力与长期主义思维，拒绝被算法操控。\n\n---\n\n## 5 个可替换的高级句型模板（英文 + 中文注释）\n\n1. **While the allure of instant gratification beckons, true mastery often unfolds not in flashes but in the quiet persistence of daily effort.**  \n   *尽管即时满足的诱惑令人向往，真正的精通往往并非昙花一现，而是源于日复一日的沉静坚持。*\n\n2. **The illusion of efficiency frequently masks a deeper erosion of substance—where quantity replaces quality, and speed supplants depth.**  \n   *效率的幻象常常掩盖了实质的流失——数量取代了质量，速度凌驾于深度之上。*\n\n3. **In an age saturated with digital distractions, cultivating focused attention has become less a skill than a radical act of self-discipline.**  \n   *在一个充斥数字干扰的时代，培养专注力已不再是一种技能，而是一种极具勇气的自我约束行为。*\n\n4. **What we gain in convenience, we risk losing in authenticity: the very essence of meaningful learning lies in the struggle, not the shortcut.**  \n   *我们在便捷中获得的，可能正在失去真实性：有意义的学习本质在于奋斗，而非捷径。*\n\n5. **Rather than chasing the next viral trend in education, we must reclaim the sacred space of slow, deliberate growth—one page, one thought, one day at a time.**  \n   *与其追逐下一个教育领域的病毒式潮流，我们更应重新夺回那片缓慢而深思的成长圣地——一页书、一个念头、一天又一天。*\n",
+      "metadata": {
+        "kind": "note",
+        "subject": "英语一",
+        "topic": "英语一写作练习",
+        "source_path": "C:\\Users\\admin\\Desktop\\study-copilot-skills\\demo-vault\\30-知识\\原创练习\\英语一写作练习.md"
       }
     },
     {

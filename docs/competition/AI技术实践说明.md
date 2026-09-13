@@ -7,7 +7,7 @@
 | 层 | 技术 | 作用 | 佐证位置 |
 | --- | --- | --- | --- |
 | 云端推理（主链路） | 宿主 Agent 自身大模型 | 14 个学习 Skill 的常规讲解、规划、诊断 | 演示视频、对话截图 |
-| 云端推理（专项链路） | **阿里云 Qwen（DashScope，qwen-flash / qwen-plus）** | 错题陪练（数学一/408 双科目变式出题+精讲）、科目配置包生成（法考 `subjects/fakao/`、注会 `subjects/cpa/`，均 Qwen 生成入库）、跨科目原创练习集（数学/408/英语一，入 demo-vault）、错因聚类报告、代码审查报告、体验文档 FAQ 撰写——**共 9 次真实调用全部留痕** | `logs/qwen/*.json` 调用留痕、API 调用截图 |
+| 云端推理（专项链路） | **阿里云 Qwen（DashScope，qwen-flash / qwen-plus）** | 错题陪练（408/数学一变式出题+精讲）、科目配置生成（法考/注会，入库 `subjects/`）、原创内容生产（练习集 01/02、英语一写作、政治卡片，入 demo-vault）、数据分析（错因聚类、复测周报、卷种差异）、工程辅助（代码审查×2、接入教程、FAQ、README 实录）——**共 16 次真实调用全部留痕，累计 26776 tokens** | `logs/qwen/*.json`、[千问证据总览](千问证据总览.md)、[千问链路全景](千问链路全景.md) |
 | 端侧推理（AI PC） | **bge-small-zh-v1.5（ONNX，CPU）本地 embedding** | 错题队列与 Vault 笔记的语义向量索引与相似检索 | `.index/` 产物、检索输出截图 |
 | 开发辅助 | GLM + Qwen 辅助 | 开发过程辅助编码；其中 `subjects/fakao/profile.json`（法考配置包）、`docs/competition/qwen错因聚类报告.md`、体验说明 FAQ 小节由 Qwen 真实生成并入库 | 提交历史、`logs/qwen/` 对应留痕 |
 
@@ -40,10 +40,10 @@ Qwen 在作品中承担四条**真实发生**的链路，全部经 DashScope 接
 
 ## 四、佐证清单（作品包 AI实践验证文件夹/）
 
-1. `logs/qwen/` 真实调用留痕 JSON × 9（消息、回复、usage、时延）
+1. `logs/qwen/` 真实调用留痕 JSON × 16（消息、回复、usage、时延）——总览见 ZIP 根层《千问证据总览.md》
 2. Qwen API 调用成功截图（DashScope 控制台用量页 + 引擎输出）
 3. 端侧检索真实运行截图（embed_index 建索引 + semantic_search 双科目查询输出）
-4. Qwen 生成并入库的实物：`subjects/fakao/profile.json`、`subjects/cpa/profile.json`、`demo-vault/30-知识/原创练习/`（练习集 01 + 英语一写作）、`docs/competition/qwen错因聚类报告.md`、`docs/competition/qwen代码审查报告.md`、体验说明 FAQ
+4. Qwen 生成并入库的实物（12 件）：法考/注会配置包、原创练习集 01/02、英语一写作、政治卡片、复测周报、错因聚类报告、卷种差异对比、代码审查×2、接入教程、README「Qwen 使用实录」专节、体验说明 FAQ
 5. 关键代码：`scripts/qwen_engine.py`（含 401 注册表候选切换、防泄漏断言）、`scripts/local_retrieval/`
 6. Prompt 设计：`kaoyan-qwen-drill/SKILL.md` 流程节 + 引擎 `--system/--prompt`
 7. 测试记录：`python -m pytest tests/ -q` 输出

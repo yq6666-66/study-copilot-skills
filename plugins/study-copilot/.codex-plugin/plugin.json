@@ -22,7 +22,7 @@
     "interface": {
         "displayName": "学习副驾 Study Copilot",
         "shortDescription": "装进任何 Agent 的学习认知引擎，任何科目，预置考研包",
-        "longDescription": "通用学习认知引擎：以 Skills 形式为任意 AI Agent（Codex、Claude Code 等）装上学习大脑。核心机制层科目无关——错题闭环、间隔复测、学习规划、进度诊断、原创模考、真题契约与本地记忆；科目由配置驱动，预置考研包（数学一/二、英语一/二、408、政治），法考、CPA、高考等新科目可由向导一键生成。可选本地端侧语义检索（AI PC 算力）与云端大模型协同，学习记录仅存用户本地。",
+        "longDescription": "通用学习认知引擎：以 Skills 形式为任意 AI Agent（Codex、Claude Code 等）装上学习大脑。核心机制层科目无关——错题闭环、间隔复测、学习规划、进度诊断、原创模考、真题契约与本地记忆；科目由配置驱动，预置考研包（数学一/二、英语一/二、408、政治），法考、CPA 等新科目可由向导一键生成（fakao/cpa 配置包即由云端 Qwen 生成入库，全部 16 次调用留痕于 logs/qwen/）。云端 Qwen（DashScope）承担错题陪练、科目配置、内容创作与分析等专项链路；可选本地端侧语义检索（AI PC 算力，bge-small-zh）与云端协同，学习记录仅存用户本地。",
         "developerName": "yq6666-66",
         "category": "Education",
         "capabilities": [
