@@ -144,8 +144,8 @@ def frames_s1():
         x += 360
     d.text(((W - d.textlength("把学习大脑，做成一套开放的 Skills", font=F_BODY)) / 2, 700),
            "把学习大脑，做成一套开放的 Skills", font=F_BODY, fill=C_DIM)
-    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜22 次真实调用全程留痕", font=F_SMALL)) / 2, 780),
-           "云端引擎 · 阿里云 Qwen｜22 次真实调用全程留痕", font=F_SMALL, fill=C_YELLOW)
+    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜25 次真实调用全程留痕", font=F_SMALL)) / 2, 780),
+           "云端引擎 · 阿里云 Qwen｜25 次真实调用全程留痕", font=F_SMALL, fill=C_YELLOW)
     yield [img], 2.4
 
 
@@ -334,8 +334,8 @@ def frames_s9():
            "代码 · 测试 · 全部证据，都在作品包里", font=F_BODY, fill=C_DIM)
     d.text(((W - d.textlength("天猫AI黑客松 · 高校挑战赛 参赛作品", font=F_SMALL)) / 2, 720),
            "天猫AI黑客松 · 高校挑战赛 参赛作品", font=F_SMALL, fill=C_DIM)
-    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜22 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL)) / 2, 790),
-           "云端引擎 · 阿里云 Qwen｜22 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL, fill=C_YELLOW)
+    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜25 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL)) / 2, 790),
+           "云端引擎 · 阿里云 Qwen｜25 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL, fill=C_YELLOW)
     yield [img], 3.0
 
 

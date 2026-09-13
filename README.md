@@ -59,7 +59,7 @@
 
 ### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
 
-除 API 调用外，本项目的深度优化由 **qwen3.8-flash 作为 ZCode 编程会话的驱动模型直接完成**（2026-09-14，共七轮）：①端侧向量缓存 + 引擎 `--stats` 留痕聚合；②新建 GitHub Actions CI（首跑抓出 2 个跨平台 bug 修复转绿）+ 真增量索引 + 检索质量端到端测试；③一键端云协同演示管道 `demo_pipeline.py` + 性能基准 `bench.py`（2000 条实测增量 19×、查询 p95 29ms；基准反手抓出缓存 JSON 负优化与测量方法两处自身 bug 并修复）；④semgrep 安全门禁入 CI（首跑抓出文档 2 处用户路径泄露并脱敏）+ 规划/模考接入端侧检索；⑤`docs/ARCHITECTURE.md`（qwen3.8-flash 初稿 + 人工审校删 1 处虚构历史幻觉，路径核验固化为 CI 门禁）；⑥CLI 错误消息可操作化（qwen3.8-flash 文案评审采纳，含埋点事实校验）。全套 52 tests，**Python 3.10/3.11/3.12 版本矩阵三 job 全绿**（run `34774366234`，Actions 公开可查）。完整证据与核验方式见 [docs/competition/Qwen会话优化实录.md](docs/competition/Qwen会话优化实录.md)。
+除 API 调用外，本项目的深度优化由 **qwen3.8-flash 作为 ZCode 编程会话的驱动模型直接完成**（2026-09-14，共七轮）：①端侧向量缓存 + 引擎 `--stats` 留痕聚合；②新建 GitHub Actions CI（首跑抓出 2 个跨平台 bug 修复转绿）+ 真增量索引 + 检索质量端到端测试；③一键端云协同演示管道 `demo_pipeline.py` + 性能基准 `bench.py`（2000 条实测增量 19×、查询 p95 29ms；基准反手抓出缓存 JSON 负优化与测量方法两处自身 bug 并修复）；④semgrep 安全门禁入 CI（首跑抓出文档 2 处用户路径泄露并脱敏）+ 规划/模考接入端侧检索；⑤`docs/ARCHITECTURE.md`（qwen3.8-flash 初稿 + 人工审校删 1 处虚构历史幻觉，路径核验固化为 CI 门禁）；⑥CLI 错误消息可操作化（qwen3.8-flash 文案评审采纳，含埋点事实校验）。全套 56 tests，**Python 3.10/3.11/3.12 版本矩阵**与五道 CI 门禁（pytest / Schema / 文档路径 / semgrep / 契约覆盖度）常绿（最新 run `34775399129`，Actions 公开可查）。完整证据与核验方式见 [docs/competition/Qwen会话优化实录.md](docs/competition/Qwen会话优化实录.md)。
 
 > **能力边界声明**：Qwen 承担错题陪练、科目配置、内容创作、数据分析与代码评审等专项链路；常规推理由宿主 Agent 自身模型完成；开发过程辅助（GLM + Qwen）见 PRIVACY.md 披露。所有 `[Qwen生成]` 标注均对应真实调用留痕，无调用则不标注。
 
