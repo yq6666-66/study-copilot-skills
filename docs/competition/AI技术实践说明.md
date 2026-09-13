@@ -7,7 +7,7 @@
 | 层 | 技术 | 作用 | 佐证位置 |
 | --- | --- | --- | --- |
 | 云端推理（主链路） | 宿主 Agent 自身大模型 | 14 个学习 Skill 的常规讲解、规划、诊断 | 演示视频、对话截图 |
-| 云端推理（专项链路） | **阿里云 Qwen（DashScope，qwen-flash / qwen-plus）** | 错题陪练（数学一/408 双科目变式出题+精讲）、法考科目配置包生成（已入库 `subjects/fakao/`）、错因聚类报告（`docs/competition/qwen错因聚类报告.md`）、体验文档 FAQ 撰写——**共 5 次真实调用全部留痕** | `logs/qwen/*.json` 调用留痕、API 调用截图 |
+| 云端推理（专项链路） | **阿里云 Qwen（DashScope，qwen-flash / qwen-plus）** | 错题陪练（数学一/408 双科目变式出题+精讲）、科目配置包生成（法考 `subjects/fakao/`、注会 `subjects/cpa/`，均 Qwen 生成入库）、跨科目原创练习集（数学/408/英语一，入 demo-vault）、错因聚类报告、代码审查报告、体验文档 FAQ 撰写——**共 9 次真实调用全部留痕** | `logs/qwen/*.json` 调用留痕、API 调用截图 |
 | 端侧推理（AI PC） | **bge-small-zh-v1.5（ONNX，CPU）本地 embedding** | 错题队列与 Vault 笔记的语义向量索引与相似检索 | `.index/` 产物、检索输出截图 |
 | 开发辅助 | GLM + Qwen 辅助 | 开发过程辅助编码；其中 `subjects/fakao/profile.json`（法考配置包）、`docs/competition/qwen错因聚类报告.md`、体验说明 FAQ 小节由 Qwen 真实生成并入库 | 提交历史、`logs/qwen/` 对应留痕 |
 
@@ -33,16 +33,17 @@ Qwen 在作品中承担四条**真实发生**的链路，全部经 DashScope 接
 2. **数学一错题陪练**：针对"级数判别法选择/hypothesis + 交错级数漏验单调性/confirmed"双错因各生成一道设陷阱变式题。
 3. **法考科目配置生成**：Qwen 按配置模板生成 `subjects/fakao/profile.json`（客观题/主观题 + 章节级大纲），已通过校验并**提交入库**——新增科目机制层零改动的实证。
 4. **错因聚类报告 + 文档 FAQ**：对 40 条错题队列输出优先簇与最小验证动作（`docs/competition/qwen错因聚类报告.md`）；撰写体验说明"常见问题"小节。
+5. **跨科目内容生产**：法考与注会两份科目配置包（Qwen 生成入库）、demo-vault 原创练习集 01（数学+408 四题）与英语一写作练习、`semantic_search.py` 代码审查报告——科目覆盖数学一/408/英语一/法考/注会。
 
 - 对齐点：Qwen 的角色是**认知增强**——把用户的错误模式变成可复测的原创变式题、把考试大纲变成可执行配置。
 - 调用纪律：先 `--dry-run` 预览请求体，确认无个人信息后真实调用；默认低成本模型 qwen-flash。
 
 ## 四、佐证清单（作品包 AI实践验证文件夹/）
 
-1. `logs/qwen/` 真实调用留痕 JSON × 5（消息、回复、usage、时延）
+1. `logs/qwen/` 真实调用留痕 JSON × 9（消息、回复、usage、时延）
 2. Qwen API 调用成功截图（DashScope 控制台用量页 + 引擎输出）
 3. 端侧检索真实运行截图（embed_index 建索引 + semantic_search 双科目查询输出）
-4. Qwen 生成并入库的实物：`subjects/fakao/profile.json`、`docs/competition/qwen错因聚类报告.md`、体验说明 FAQ
+4. Qwen 生成并入库的实物：`subjects/fakao/profile.json`、`subjects/cpa/profile.json`、`demo-vault/30-知识/原创练习/`（练习集 01 + 英语一写作）、`docs/competition/qwen错因聚类报告.md`、`docs/competition/qwen代码审查报告.md`、体验说明 FAQ
 5. 关键代码：`scripts/qwen_engine.py`（含 401 注册表候选切换、防泄漏断言）、`scripts/local_retrieval/`
 6. Prompt 设计：`kaoyan-qwen-drill/SKILL.md` 流程节 + 引擎 `--system/--prompt`
 7. 测试记录：`python -m pytest tests/ -q` 输出
