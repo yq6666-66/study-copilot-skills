@@ -12,6 +12,9 @@ plugins/study-copilot/.index/
 # Logs (local evidence only, never committed)
 logs/
 
+# Build output
+dist/
+
 # OS
 Thumbs.db
 .DS_Store

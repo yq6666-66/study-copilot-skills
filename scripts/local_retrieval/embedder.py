@@ -51,6 +51,7 @@ def get_embedder(model_name: str = MODEL_NAME):
     """返回实现 .embed(texts) -> list[list[float]] 的 embedder。
 
     模型未就绪时抛出带中文安装指引的 RuntimeError，由调用方决定降级。
+    模型已缓存时强制离线加载（断网/网络抖动不影响本地演示）。
     """
     try:
         _ensure_hf_mirror()
@@ -63,7 +64,14 @@ def get_embedder(model_name: str = MODEL_NAME):
             "（约 100MB，缓存到仓库 models/ 目录）。原始原因：" + repr(exc)
         ) from exc
 
-    model = TextEmbedding(model_name=model_name, cache_dir=str(models_dir()))
+    try:
+        model = TextEmbedding(model_name=model_name, cache_dir=str(models_dir()))
+    except Exception:
+        if not os.environ.get("HF_HUB_OFFLINE"):
+            os.environ["HF_HUB_OFFLINE"] = "1"
+            model = TextEmbedding(model_name=model_name, cache_dir=str(models_dir()))
+        else:
+            raise
 
     class _FastEmbedder:
         def embed(self, texts: List[str]) -> List[List[float]]:
