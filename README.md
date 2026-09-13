@@ -26,10 +26,11 @@
 - 📈 **学习周报生成器**（新增）：`scripts/study_report.py` 产出周报（掌握概览/错题热点/7 天 FSRS 负载），洞察段由云端 Qwen 生成并留痕（示例见 `docs/competition/学习周报示例.md`）
 - 🗂️ **Anki 导出器**（新增）：`scripts/export_anki.py` 把错题队列导出为 Anki 可导入 CSV（含 FSRS 稳定性/难度/建议复习日字段；Front 只含回忆问题）；`--qwen-prompts` 可选由 Qwen 改写卡片措辞并留痕（示例 `docs/competition/anki导出示例.csv`）
 - 📊 **静态 HTML 学习仪表盘**（新增）：`scripts/study_dashboard.py` 单文件零 JS 渲染（掌握度四色块/7 天 FSRS 负载条/遗忘曲线 SVG/错题热点）；`--qwen-summary` 由 Qwen 写执行摘要并留痕（示例 `docs/competition/学习仪表盘示例.html`）
+- 🎯 **考前预练 CLI**（新增）：`scripts/pre_drill.py` 三引擎串联——端侧语义召回相似历史错题 → 云端 Qwen 出定向变式预练卷（`--qwen` 留痕）→ Markdown 输出；`--no-qwen` 离线模式（示例 `docs/competition/考前预练示例.md`）
 
 ## Qwen 使用实录
 
-以下 **30 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
+以下 **32 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
 
 | # | 链路 | 入库实物 | 留痕 |
 |---|------|----------|------|
@@ -63,8 +64,10 @@
 | 28 | Anki 卡片回忆式措辞改写（qwen-flash） | `docs/competition/anki导出示例.csv`（Front 仅回忆问题/Back 答案要点） | `20260914-035446` |
 | 29 | 仪表盘执行摘要 v1（qwen-flash） | `docs/competition/学习仪表盘示例.html`（首版布局） | `20260914-040220` |
 | 30 | 仪表盘执行摘要 v2（qwen-flash） | 同上（含错题热点区定稿） | `20260914-040357` |
+| 31 | 考前预练定向变式 v1（qwen-flash） | `docs/competition/考前预练示例.md`（端侧召回 r028 0.814 领衔） | `20260914-041149` |
+| 32 | 考前预练定向变式 v2（qwen-flash） | 同上（frontmatter 摘录修复后定稿） | `20260914-041238` |
 
-覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×24、`qwen3.8-flash` ×6。
+覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×26、`qwen3.8-flash` ×6。
 
 ### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
 
