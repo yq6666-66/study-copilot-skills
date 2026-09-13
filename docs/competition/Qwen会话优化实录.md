@@ -34,6 +34,18 @@
 
 - 新增 8 个离线回归测试（缓存 6 + stats 2），全套 **29 passed**。
 
+## 第二轮（同日，qwen3.8-flash 会话继续）：CI 工程化 + 增量索引 + 质量端到端
+
+| 优化项 | 内容 | 结果 |
+| --- | --- | --- |
+| 新建 CI | 发现新项目从旧仓库移植时丢失了 GitHub Actions（零自动校验）；新增 `workflows/ci.yml`（pytest + `validate_records.py`）与数据资产校验器（学习记录 Schema 1.1 + 科目配置结构，5 份配置/记录） | 公开可查：Actions 运行记录 |
+| **CI 首跑抓出 2 个真实 bug** | ① `winreg` 仅 Windows 存在，Linux CI 上 ModuleNotFoundError——跨平台降级修复；② `skipif` 条件在 Actions 环境短路成字符串 `"true"` 导致评估崩溃——bool() 包裹修复。两个 bug 在 Windows 本机均不可见，**只有 CI 能抓到** | 修复后 CI 转绿（run `34769398038`，14s，32 passed + 2 skipped by design） |
+| 真增量索引 | `embed_index.py --incremental`：按 doc_id+文本比对旧索引，未变条目直接复用向量 | 真实模型实测：60 篇文档改 1 增 1 → **复用 58、仅 embed 2 条、增量计算 0.04s**（全量重建 2.2s 的约 1/55） |
+| 检索质量端到端测试 | 真实 bge 模型下「死锁查询→top1 死锁簇且零串扰」「级数查询→top1 级数簇且零串扰」进入测试套件；无模型/CI 环境自动 skip | 本地实跑通过；全套 **34 passed** |
+| 仓库卫生 | 清理误提交的索引二进制（`vectors.npy`/`emb_cache.json` 曾被 git 跟踪），补 .gitignore | 仓库不再携带可再生的大文件 |
+
+**证据等级升级说明**：第一轮的会话级证据依赖本机 ZCode 模型 I/O 日志（本机可验、现场可演示）；第二轮起，优化成果直接体现为**公开可查**的 GitHub 资产——commit 历史（`96a937c`、`721aa52`）、Actions 绿色运行记录、CI 徽章（README 顶部），任何人可远程核验。
+
 ## 口径边界
 
 - 本次是「Qwen 模型驱动的开发会话」；此前会话中本项目的部分基础设施代码由 GLM 辅助完成（两者在 PRIVACY.md 与 AI 技术实践说明中分别如实披露）。
