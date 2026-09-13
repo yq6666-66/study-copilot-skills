@@ -80,7 +80,13 @@ def main() -> int:
         print("未采集到语料：{}".format(corpus_dir))
         return 1
 
-    embedder = FakeEmbedder() if args.fake else get_embedder(args.model)
+    embedder = FakeEmbedder() if args.fake else None
+    if embedder is None:
+        try:
+            embedder = get_embedder(args.model)
+        except RuntimeError as exc:  # 依赖缺失/模型不可用 → 给出可操作指引而非 traceback
+            print(str(exc))
+            return 2
     started = time.time()
     texts = [d["text"] for d in docs]
     # fake 与真实模型用不同缓存命名空间，互不污染

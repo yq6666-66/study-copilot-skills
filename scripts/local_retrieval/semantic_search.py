@@ -35,11 +35,16 @@ def main() -> int:
     root = Path(__file__).resolve().parents[2]
     index_dir = Path(args.index) if args.index else root / "demo-vault" / "30-知识" / ".index"
     if not (index_dir / "meta.json").exists():
-        print(json.dumps({"error": "索引不存在，请先运行 embed_index.py", "index": str(index_dir)},
-                         ensure_ascii=False))
+        print("索引不存在：{}\n先建一次索引：python scripts/local_retrieval/embed_index.py".format(index_dir))
         return 1
 
-    embedder = FakeEmbedder() if args.fake else get_embedder(args.model)
+    embedder = FakeEmbedder() if args.fake else None
+    if embedder is None:
+        try:
+            embedder = get_embedder(args.model)
+        except RuntimeError as exc:  # 模型未就绪时给下载指引，不抛 traceback
+            print(str(exc))
+            return 2
     qvec = embedder.embed([args.query])[0]
     results = search(index_dir, qvec, top_k=args.top_k, subject=args.subject)
     print(json.dumps({"query": args.query, "subject_filter": args.subject,

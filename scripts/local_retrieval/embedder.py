@@ -63,7 +63,7 @@ def get_embedder(model_name: str = MODEL_NAME):
             "端侧 embedding 依赖未就绪：请先运行 "
             "`python -m pip install fastembed`。首次运行将从 "
             f"{os.environ.get('HF_ENDPOINT', HF_MIRROR)} 下载 {model_name} "
-            "（约 100MB，缓存到仓库 models/ 目录）。原始原因：" + repr(exc)
+            "（约 54.6MB，缓存到仓库 models/ 目录）；完成后重试当前命令。原始原因：" + repr(exc)
         ) from exc
 
     try:

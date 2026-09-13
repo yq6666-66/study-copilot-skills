@@ -108,7 +108,8 @@ def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: flo
     latency_ms = int((time.time() - started) * 1000)
 
     if resp.status_code != 200:
-        raise RuntimeError("Qwen 调用失败 HTTP {}: {}".format(resp.status_code, resp.text[:300]))
+        raise RuntimeError("Qwen 调用失败 HTTP {}: {}{}".format(
+            resp.status_code, resp.text[:300], _http_action_hint(resp.status_code)))
 
     body = resp.json()
     choice = (body.get("choices") or [{}])[0]
@@ -175,6 +176,20 @@ def stats(log_dir: Path = LOG_DIR) -> dict:
                              "avg": round(sum(latencies) / len(latencies))}
     out["api_key_leaked_logs"] = key_leak
     return out
+
+
+def _http_action_hint(status: int) -> str:
+    """面向使用者的可操作指引（错误体验改进；文案经 qwen3.8-flash 评审采纳，留痕 20260914-020602）。"""
+    if status in (401, 403):
+        return (" → Key 可能失效或未开通：请到百炼控制台重建 Key；Windows 执行 setx DASHSCOPE_API_KEY \"sk-…\""
+                "并**新开终端**，macOS/Linux 执行 export DASHSCOPE_API_KEY=\"sk-…\" 后重试；"
+                "若仍失败，请确认模型服务已开通。")
+    if status == 429:
+        return (" → 触发限流/额度：请改用低成本模型重试（同命令加 --model qwen-flash）；"
+                "继续使用原模型请稍后重试，或走会话内降级。")
+    if status >= 500:
+        return " → 服务端异常：稍后重试；持续失败请查看百炼服务状态。"
+    return " → 原始请求与错误已打印；调用可通过 --dry-run 先行自检。"
 
 
 def main() -> int:
