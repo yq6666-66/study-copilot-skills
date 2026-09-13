@@ -20,6 +20,8 @@ from PIL import Image, ImageDraw, ImageFont
 REPO = Path(__file__).resolve().parents[1]
 WORK = REPO / "dist" / "video_work"
 OUT = REPO / "dist" / "学习副驾演示视频.mp4"
+# 计数单一事实源：每次渲染从真实留痕目录读取，避免硬编码数字过时
+CALLS = len(list((REPO / "logs" / "qwen").glob("*.json")))
 W, H = 1920, 1080
 VOICE = "zh-CN-YunxiNeural"
 
@@ -144,8 +146,9 @@ def frames_s1():
         x += 360
     d.text(((W - d.textlength("把学习大脑，做成一套开放的 Skills", font=F_BODY)) / 2, 700),
            "把学习大脑，做成一套开放的 Skills", font=F_BODY, fill=C_DIM)
-    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜25 次真实调用全程留痕", font=F_SMALL)) / 2, 780),
-           "云端引擎 · 阿里云 Qwen｜25 次真实调用全程留痕", font=F_SMALL, fill=C_YELLOW)
+    label_head = f"云端引擎 · 阿里云 Qwen｜{CALLS} 次真实调用全程留痕"
+    d.text(((W - d.textlength(label_head, font=F_SMALL)) / 2, 780),
+           label_head, font=F_SMALL, fill=C_YELLOW)
     yield [img], 2.4
 
 
@@ -334,8 +337,9 @@ def frames_s9():
            "代码 · 测试 · 全部证据，都在作品包里", font=F_BODY, fill=C_DIM)
     d.text(((W - d.textlength("天猫AI黑客松 · 高校挑战赛 参赛作品", font=F_SMALL)) / 2, 720),
            "天猫AI黑客松 · 高校挑战赛 参赛作品", font=F_SMALL, fill=C_DIM)
-    d.text(((W - d.textlength("云端引擎 · 阿里云 Qwen｜25 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL)) / 2, 790),
-           "云端引擎 · 阿里云 Qwen｜25 次真实调用 · logs/qwen/ 全程留痕", font=F_SMALL, fill=C_YELLOW)
+    label_end = f"云端引擎 · 阿里云 Qwen｜{CALLS} 次真实调用 · logs/qwen/ 全程留痕"
+    d.text(((W - d.textlength(label_end, font=F_SMALL)) / 2, 790),
+           label_end, font=F_SMALL, fill=C_YELLOW)
     yield [img], 3.0
 
 
