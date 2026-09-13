@@ -30,12 +30,43 @@ def list_skills() -> list[str]:
     return sorted(p.name for p in SKILLS_DIR.iterdir() if (p / "SKILL.md").exists())
 
 
+def _read_marker(target_root: Path) -> dict:
+    p = target_root / MARKER
+    if p.exists():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            pass
+    return {"hosts": {}}
+
+
 def _write_marker(target_root: Path, files: list[str], host: str) -> None:
-    (target_root / MARKER).write_text(
-        json.dumps({"host": host, "installed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-                    "files": files}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    """按宿主合并安装清单（qwen3.8-flash 审查意见#2）：同一目标根装多个宿主互不覆盖。"""
+    record = _read_marker(target_root)
+    record.setdefault("hosts", {})[host] = {"installed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                                            "files": files}
+    (target_root / MARKER).write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _managed_by_us(dest: Path, target_root: Path, host: str) -> bool:
+    """dest 是否在本安装器的清单里（qwen3.8-flash 审查意见#1）：不受管的目录不直接删除。"""
+    record = _read_marker(target_root)
+    for f in record.get("hosts", {}).get(host, {}).get("files", []):
+        if Path(f) == dest or dest in Path(f).parents or Path(f) in dest.parents:
+            return True
+    return False
+
+
+def _safe_replace_dir(dest: Path, target_root: Path, host: str) -> None:
+    """覆盖安装前保护：不受管目录先备份为 .bak 而非直接删除。"""
+    if dest.exists() and not _managed_by_us(dest, target_root, host):
+        bak = dest.with_name(dest.name + ".bak")
+        if bak.exists():
+            shutil.rmtree(bak)
+        dest.rename(bak)
+        print("已将非本安装器管理的目录备份为：{}".format(bak))
+    elif dest.exists():
+        shutil.rmtree(dest)
 
 
 def _plan_summary(action: str, items: list[str]) -> None:
@@ -51,8 +82,7 @@ def install_codex(target_root: Path, dry_run: bool) -> list[str]:
     if dry_run:
         _plan_summary("DRY-RUN codex", plan)
         return [str(dest)]
-    if dest.exists():
-        shutil.rmtree(dest)
+    _safe_replace_dir(dest, target_root, "codex")
     dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(PLUGIN_DIR, dest)
     _write_marker(target_root, [str(dest)], "codex")
@@ -71,8 +101,7 @@ def install_claude_code(target_root: Path, dry_run: bool) -> list[str]:
             _plan_summary("DRY-RUN claude-code", plan)
             installed.append(str(dest))
             continue
-        if dest.exists():
-            shutil.rmtree(dest)
+        _safe_replace_dir(dest, target_root, "claude-code")
         shutil.copytree(src, dest)
         installed.append(str(dest))
     if dry_run:
@@ -117,18 +146,20 @@ def uninstall(target_root: Path, dry_run: bool) -> int:
     if not marker.exists():
         print("未找到安装清单 {}，无法安全卸载。".format(marker))
         return 1
-    record = json.loads(marker.read_text(encoding="utf-8"))
+    record = _read_marker(target_root)
+    hosts = record.get("hosts", {})
+    all_files = [f for entries in hosts.values() for f in entries.get("files", [])]
     if dry_run:
-        _plan_summary("DRY-RUN uninstall", record["files"])
+        _plan_summary("DRY-RUN uninstall", all_files)
         return 0
-    for item in record["files"]:
+    for item in all_files:
         p = Path(item)
         if p.is_dir():
             shutil.rmtree(p, ignore_errors=True)
         elif p.exists():
             p.unlink()
     marker.unlink()
-    print("已卸载 {} 项（host={}）。".format(len(record["files"]), record.get("host")))
+    print("已卸载 {} 项（hosts={}）。".format(len(all_files), ", ".join(hosts) or "无"))
     return 0
 
 

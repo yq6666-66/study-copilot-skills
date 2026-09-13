@@ -47,21 +47,30 @@ def collect(corpus_dir: Path) -> List[Dict]:
     docs: List[Dict] = []
     queue = corpus_dir / QUEUE_RELPATH
     if queue.exists():
-        data = json.loads(queue.read_text(encoding="utf-8"))
-        for i, item in enumerate(data.get("items", [])):
-            docs.append(
-                {
-                    "doc_id": "review:{}".format(item.get("id", i)),
-                    "text": _review_text(item),
-                    "metadata": {
-                        "kind": "review",
-                        "subject": item.get("subject"),
-                        "topic": item.get("topic"),
-                        "status": item.get("status"),
-                        "source_path": str(queue),
-                    },
-                }
-            )
+        try:
+            data = json.loads(queue.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            data = None  # 队列损坏不阻塞其余语料采集（qwen3.8-flash 审查意见#3）
+        if isinstance(data, dict):
+            seen_ids = set()
+            for i, item in enumerate(data.get("items", [])):
+                doc_id = "review:{}".format(item.get("id") or i)  # None/空 id 兜底（审查意见#4）
+                if doc_id in seen_ids:
+                    doc_id = "review:{}-{}".format(item.get("id") or i, i)
+                seen_ids.add(doc_id)
+                docs.append(
+                    {
+                        "doc_id": doc_id,
+                        "text": _review_text(item),
+                        "metadata": {
+                            "kind": "review",
+                            "subject": item.get("subject"),
+                            "topic": item.get("topic"),
+                            "status": item.get("status"),
+                            "source_path": str(queue),
+                        },
+                    }
+                )
     for md in sorted(corpus_dir.rglob("*.md")):
         if ".index" in md.parts:
             continue
