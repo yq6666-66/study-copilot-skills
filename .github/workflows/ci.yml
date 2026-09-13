@@ -24,6 +24,9 @@ jobs:
       - name: Validate data records & subject profiles (Schema 1.1)
         run: python scripts/validate_records.py
 
+      - name: Doc path references must exist (anti path-drift gate for AI-authored docs)
+        run: python scripts/check_doc_paths.py
+
       - name: Semgrep security gate (secrets / user paths / shell exec)
         run: |
           python -m pip install --quiet semgrep
