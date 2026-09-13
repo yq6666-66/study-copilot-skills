@@ -2,6 +2,16 @@
 
 本项目所有条目的依据：git 提交历史（公开）、`logs/qwen/` 调用留痕（25 份）、GitHub Actions 运行记录（run ID 公开可查）、`docs/competition/Qwen会话优化实录.md`（逐轮明细）。
 
+## v1.9 — 2026-09-14（第十四轮：Anki 导出）
+
+### 新增
+- `scripts/export_anki.py`：错题队列 → Anki 可导入 CSV（UTF-8 BOM；Front/Back/Tags/Stability/Difficulty/IntervalDays/SuggestedNextDate/Status 八列；`--only-active`、`--delimiter` 选项）。
+- `--qwen-prompts` 模式：卡片措辞由 qwen-flash 改写为回忆式（提示词硬约束 Front 禁含答案；第 28 次留痕 `20260914-035446`，5,154 tokens）；示例 `docs/competition/anki导出示例.csv`。
+- 安全：Mimosa 路径穿越告警驱动结构重构——核心函数只处理文本、文件 I/O 收敛到 main() 内联守卫（禁 `..` 段 + 限定仓库目录）；7 个回归测试。
+
+### 变更
+- 材料计数 28 次 / 75,378 tokens / ×22+×6。78 tests。
+
 ## v1.8 — 2026-09-14（第十三轮：功能扩展）
 
 ### 新增

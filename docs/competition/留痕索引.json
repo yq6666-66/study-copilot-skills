@@ -1,10 +1,10 @@
 {
   "generated_from": "logs/qwen/",
   "note": "脱敏索引：仅文件名与用量，无请求/响应内容",
-  "calls": 27,
-  "tokens": 70224,
+  "calls": 28,
+  "tokens": 75378,
   "by_model": {
-    "qwen-flash": 21,
+    "qwen-flash": 22,
     "qwen3.8-flash": 6
   },
   "files": [
@@ -196,6 +196,13 @@
       "total_tokens": 481,
       "latency_ms": 1715,
       "timestamp": "2026-09-14T03:42:12+0800"
+    },
+    {
+      "name": "20260914-035446-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 5154,
+      "latency_ms": 19388,
+      "timestamp": "2026-09-14T03:54:46+0800"
     }
   ]
 }
