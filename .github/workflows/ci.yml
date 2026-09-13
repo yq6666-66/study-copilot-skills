@@ -34,6 +34,9 @@ jobs:
       - name: Contract coverage gate (no dead links, no orphan contracts)
         run: python scripts/check_contract_coverage.py
 
+      - name: Number consistency gate (docs vs logs/qwen traces)
+        run: python scripts/check_numbers.py
+
       - name: Semgrep security gate (secrets / user paths / shell exec)
         if: matrix.python-version == '3.12'
         run: |

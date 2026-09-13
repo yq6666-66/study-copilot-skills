@@ -1,0 +1,194 @@
+{
+  "generated_from": "logs/qwen/",
+  "note": "脱敏索引：仅文件名与用量，无请求/响应内容",
+  "calls": 26,
+  "tokens": 69743,
+  "by_model": {
+    "qwen-flash": 20,
+    "qwen3.8-flash": 6
+  },
+  "files": [
+    {
+      "name": "20260913-211223-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1823,
+      "latency_ms": 19348,
+      "timestamp": "2026-09-13T21:12:23+0800"
+    },
+    {
+      "name": "20260913-230125-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 5887,
+      "latency_ms": 52381,
+      "timestamp": "2026-09-13T23:01:25+0800"
+    },
+    {
+      "name": "20260913-230153-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 665,
+      "latency_ms": 4620,
+      "timestamp": "2026-09-13T23:01:53+0800"
+    },
+    {
+      "name": "20260913-230428-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 484,
+      "latency_ms": 2726,
+      "timestamp": "2026-09-13T23:04:28+0800"
+    },
+    {
+      "name": "20260913-230430-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 378,
+      "latency_ms": 2300,
+      "timestamp": "2026-09-13T23:04:30+0800"
+    },
+    {
+      "name": "20260913-231650-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 2070,
+      "latency_ms": 13305,
+      "timestamp": "2026-09-13T23:16:50+0800"
+    },
+    {
+      "name": "20260913-231704-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 2257,
+      "latency_ms": 14768,
+      "timestamp": "2026-09-13T23:17:04+0800"
+    },
+    {
+      "name": "20260913-231711-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 887,
+      "latency_ms": 6166,
+      "timestamp": "2026-09-13T23:17:11+0800"
+    },
+    {
+      "name": "20260913-231715-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1082,
+      "latency_ms": 4130,
+      "timestamp": "2026-09-13T23:17:15+0800"
+    },
+    {
+      "name": "20260913-232552-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1254,
+      "latency_ms": 5773,
+      "timestamp": "2026-09-13T23:25:52+0800"
+    },
+    {
+      "name": "20260913-232621-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 4549,
+      "latency_ms": 29664,
+      "timestamp": "2026-09-13T23:26:21+0800"
+    },
+    {
+      "name": "20260913-232628-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 834,
+      "latency_ms": 6711,
+      "timestamp": "2026-09-13T23:26:28+0800"
+    },
+    {
+      "name": "20260913-232633-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 681,
+      "latency_ms": 4661,
+      "timestamp": "2026-09-13T23:26:33+0800"
+    },
+    {
+      "name": "20260913-232635-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 426,
+      "latency_ms": 2327,
+      "timestamp": "2026-09-13T23:26:35+0800"
+    },
+    {
+      "name": "20260913-232638-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1525,
+      "latency_ms": 2789,
+      "timestamp": "2026-09-13T23:26:38+0800"
+    },
+    {
+      "name": "20260913-232648-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1974,
+      "latency_ms": 10323,
+      "timestamp": "2026-09-13T23:26:48+0800"
+    },
+    {
+      "name": "20260913-234305-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 85,
+      "latency_ms": 2160,
+      "timestamp": "2026-09-13T23:43:05+0800"
+    },
+    {
+      "name": "20260913-234708-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 4960,
+      "latency_ms": 46330,
+      "timestamp": "2026-09-13T23:47:08+0800"
+    },
+    {
+      "name": "20260913-235015-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 7339,
+      "latency_ms": 83686,
+      "timestamp": "2026-09-13T23:50:15+0800"
+    },
+    {
+      "name": "20260913-235032-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 2440,
+      "latency_ms": 16814,
+      "timestamp": "2026-09-13T23:50:32+0800"
+    },
+    {
+      "name": "20260913-235047-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 1289,
+      "latency_ms": 15452,
+      "timestamp": "2026-09-13T23:50:47+0800"
+    },
+    {
+      "name": "20260914-000025-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1331,
+      "latency_ms": 6640,
+      "timestamp": "2026-09-14T00:00:25+0800"
+    },
+    {
+      "name": "20260914-005709-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 1306,
+      "latency_ms": 8872,
+      "timestamp": "2026-09-14T00:57:09+0800"
+    },
+    {
+      "name": "20260914-014216-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 14173,
+      "latency_ms": 170560,
+      "timestamp": "2026-09-14T01:42:16+0800"
+    },
+    {
+      "name": "20260914-020602-qwen3.8-flash.json",
+      "model": "qwen3.8-flash",
+      "total_tokens": 2714,
+      "latency_ms": 32601,
+      "timestamp": "2026-09-14T02:06:02+0800"
+    },
+    {
+      "name": "20260914-030050-qwen-flash.json",
+      "model": "qwen-flash",
+      "total_tokens": 7330,
+      "latency_ms": 24139,
+      "timestamp": "2026-09-14T03:00:50+0800"
+    }
+  ]
+}
