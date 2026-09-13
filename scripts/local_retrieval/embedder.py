@@ -34,6 +34,8 @@ def _ensure_hf_mirror() -> None:
 class FakeEmbedder:
     """确定性伪向量（SHA-256 哈希 → 单位向量），仅用于离线测试与 --fake 冒烟。"""
 
+    model_tag = "fake"
+
     def __init__(self, dim: int = 64) -> None:
         self.dim = dim
 
@@ -74,6 +76,8 @@ def get_embedder(model_name: str = MODEL_NAME):
             raise
 
     class _FastEmbedder:
+        model_tag = model_name
+
         def embed(self, texts: List[str]) -> List[List[float]]:
             return [list(map(float, v)) for v in model.embed(texts)]
 

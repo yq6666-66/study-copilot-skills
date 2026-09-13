@@ -68,3 +68,30 @@ def test_corrupted_cache_treated_as_empty(tmp_path: Path):
     _, hits = embed_cached(emb, ["甲"], "fake", tmp_path)
     assert hits == 0 and emb.calls == 1
     assert load(tmp_path)  # 重建后缓存恢复可用
+
+
+def test_legacy_json_migrates_to_npz(tmp_path: Path):
+    """旧版 emb_cache.json 可读，且写入时迁移为 npz 并删除 json。"""
+    import json as _json
+    from local_retrieval.vec_cache import CACHE_FILE as NPZ_NAME, _key, LEGACY_JSON
+
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    legacy = {str(_key("fake", "甲")): [1.0, 2.0, 0.0]}  # 与 embedder 输出同维
+    (tmp_path / LEGACY_JSON).write_text(_json.dumps(legacy), encoding="utf-8")
+    emb = CountingEmbedder()
+    vectors, hits = embed_cached(emb, ["甲", "乙"], "fake", tmp_path)
+    assert hits == 1 and emb.calls == 1
+    assert (tmp_path / NPZ_NAME).exists()
+    assert not (tmp_path / LEGACY_JSON).exists()  # 已迁移删除
+    assert vectors[0] == [1.0, 2.0, 0.0]
+
+
+def test_long_keys_not_truncated(tmp_path: Path):
+    """npz key 变长不截断（模型名+64hex 超过 64 字符）。"""
+    emb = CountingEmbedder()
+    model = "BAAI/bge-small-zh-v1.5"
+    texts = ["文本{}".format(i) for i in range(5)]
+    v1, _ = embed_cached(emb, texts, model, tmp_path)
+    v2, hits = embed_cached(CountingEmbedder(), texts, model, tmp_path)
+    assert hits == 5
+    assert v1 == v2  # roundtrip 无损

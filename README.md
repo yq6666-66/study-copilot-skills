@@ -25,7 +25,7 @@
 
 ## Qwen 使用实录
 
-以下 **22 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
+以下 **23 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
 
 | # | 链路 | 入库实物 | 留痕 |
 |---|------|----------|------|
@@ -51,12 +51,13 @@
 | 20 | 双模型对比 · qwen-flash | `docs/competition/双模型对比报告.md` | `20260913-235032` |
 | 21 | 双模型对比 · qwen3.8-flash | 同上（同题对比，token/输出差异如实记录） | `20260913-235047` |
 | 22 | 下周复测计划表 | `demo-vault/20-项目/复测计划-Qwen.md` | `20260914-000025` |
+| 23 | 演示管道全链路（端侧召回→变式题） | `scripts/demo_pipeline.py` 实跑产出 | `20260914-005709` |
 
-覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×18、`qwen3.8-flash` ×4。
+覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×19、`qwen3.8-flash` ×4。
 
-### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，两轮）
+### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
 
-除 API 调用外，本项目的深度优化由 **qwen3.8-flash 作为 ZCode 编程会话的驱动模型直接完成**（2026-09-14）：第一轮——端侧检索向量缓存（59 篇重建 2.2s→0.0s）、引擎 `--stats` 留痕聚合；第二轮——新建 GitHub Actions CI（首跑抓出 2 个 Windows 本机不可见的跨平台 bug 并修复转绿）、真增量索引（60 篇复用 58、增量 0.04s）、真实模型检索质量端到端测试、数据资产校验器，全套 34 tests。完整证据与核验方式见 [docs/competition/Qwen会话优化实录.md](docs/competition/Qwen会话优化实录.md)。
+除 API 调用外，本项目的深度优化由 **qwen3.8-flash 作为 ZCode 编程会话的驱动模型直接完成**（2026-09-14）：第一轮——端侧向量缓存、引擎 `--stats` 留痕聚合；第二轮——新建 GitHub Actions CI（首跑抓出 2 个跨平台 bug 修复转绿）、真增量索引、检索质量端到端测试；第三轮——一键端云协同演示管道 `demo_pipeline.py`（端侧 0.03s 召回→Qwen 8.9s 出题→留痕）、性能基准 `bench.py`（2000 条实测增量 19× 加速、查询 p95 29ms；并抓出缓存 JSON 负优化与测量方法两处自身 bug，修复后复测）。全套 42 tests。完整证据与核验方式见 [docs/competition/Qwen会话优化实录.md](docs/competition/Qwen会话优化实录.md)。
 
 > **能力边界声明**：Qwen 承担错题陪练、科目配置、内容创作、数据分析与代码评审等专项链路；常规推理由宿主 Agent 自身模型完成；开发过程辅助（GLM + Qwen）见 PRIVACY.md 披露。所有 `[Qwen生成]` 标注均对应真实调用留痕，无调用则不标注。
 
@@ -92,6 +93,9 @@ python install.py --host claude-code     # 装到 ~/.claude/skills/（Codex 用�
 
 # 校验数据资产（Schema 1.1 + 科目配置）
 python scripts/validate_records.py
+
+# 一键体验端云协同（真实模型 + 真实 Qwen 调用留痕；--dry-cloud 可离线）
+python scripts/demo_pipeline.py --item r028
 
 # 5 分钟体验路径见 docs/competition/体验说明.md
 ```
