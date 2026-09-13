@@ -43,6 +43,7 @@ def tmp_log(monkeypatch, tmp_path):
 
 def test_missing_key_exit_code(monkeypatch, capsys):
     monkeypatch.delenv("DASHSCOPE_API_KEY", raising=False)
+    monkeypatch.setattr(qwen_engine, "_registry_key", lambda: None)  # 本机注册表可能真有 Key，必须一并隔离
     sys.argv = ["qwen_engine.py", "--prompt", "测试"]
     rc = qwen_engine.main()
     out = capsys.readouterr().out
