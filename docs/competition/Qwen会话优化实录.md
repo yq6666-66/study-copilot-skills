@@ -131,6 +131,14 @@ CI 升级为 3.10 / 3.11 / 3.12 三版本矩阵（fail-fast off；semgrep 仅 3.
 
 全套 **78 passed**；计数同步 28 次 / 75,378 tokens。
 
+## 第十五轮（同日）：静态 HTML 学习仪表盘
+
+| 动作 | 内容 | 结果 |
+| --- | --- | --- |
+| `scripts/study_dashboard.py` | 单文件零 JS：掌握度四色块（mastered/due/retesting/pending）、7 天 FSRS 负载条、遗忘曲线 SVG（S=2/7/21 由 scheduler 公式实时计算）、错题热点、执行摘要；队列文本全部 html.escape（XSS 测试覆盖） | 6 回归测试；测试失败反推出功能缺口（热点未渲染）→ 补区块后 84 passed |
+| `study_report.compute_stats()` | 统计层抽取，周报/仪表盘同源，杜绝双份统计漂移 | 重构零行为变化 |
+| 第 29/30 次 API 调用 | `--qwen-summary` 执行摘要 v1/v2（v2 因补热点区重生成，两版均留痕） | `20260914-040220`（259t）、`20260914-040357`（266t）；示例 `docs/competition/学习仪表盘示例.html` |
+
 ## 口径边界
 
 - 本次是「Qwen 模型驱动的开发会话」；此前会话中本项目的部分基础设施代码由 GLM 辅助完成（两者在 PRIVACY.md 与 AI 技术实践说明中分别如实披露）。

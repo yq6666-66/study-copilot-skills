@@ -2,6 +2,14 @@
 
 本项目所有条目的依据：git 提交历史（公开）、`logs/qwen/` 调用留痕（25 份）、GitHub Actions 运行记录（run ID 公开可查）、`docs/competition/Qwen会话优化实录.md`（逐轮明细）。
 
+## v1.10 — 2026-09-14（第十五轮：静态 HTML 仪表盘）
+
+### 新增
+- `scripts/study_dashboard.py`：单文件零 JS 学习仪表盘（科目掌握度四色块、未来 7 天 FSRS 负载条、遗忘曲线 SVG 三曲线、错题热点、执行摘要）；所有队列文本 html.escape 注入（XSS 回归测试覆盖）。
+- `--qwen-summary`：执行摘要由 qwen-flash 基于真实统计生成（第 29、30 次留痕 `20260914-040220`/`20260914-040357`；v2 为补错题热点区后重生成）；示例 `docs/competition/学习仪表盘示例.html`。
+- `study_report.compute_stats()` 抽取为共享统计层（周报与仪表盘同源）。
+- 6 个回归测试；全套 84 passed。材料计数 30 次 / 75,903 tokens。
+
 ## v1.9 — 2026-09-14（第十四轮：Anki 导出）
 
 ### 新增

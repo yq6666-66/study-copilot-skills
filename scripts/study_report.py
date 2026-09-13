@@ -40,13 +40,11 @@ def _progress_from_md(md_path: Path) -> dict | None:
     return None
 
 
-def build_report(queue_path: Path, today: date, vault_root: Path | None = None) -> tuple[str, list[dict]]:
+def compute_stats(queue_path: Path, today: date) -> dict:
+    """周报/仪表盘共享的统计计算：科目概览、错题热点、7 天 FSRS 负载、调度明细。"""
     data = json.loads(queue_path.read_text(encoding="utf-8"))
     items = data.get("items", [])
     sched = [sc.schedule_item(it, today) for it in items]
-
-    lines = ["# 学习周报（{} 起）".format(today.isoformat()), ""]
-    # 1) 科目掌握概览
     by_subject: dict = {}
     for it, s in zip(items, sched):
         sub = it.get("subject") or "?"
@@ -56,6 +54,22 @@ def build_report(queue_path: Path, today: date, vault_root: Path | None = None) 
         slot["sum_s"] += s["stability"]
         if s["suggested_next_date"] <= (today + timedelta(days=7)).isoformat():
             slot["due7"] += 1
+    hot = Counter((it.get("topic") or "?") for it in items if it.get("status") != "mastered")
+    bucket: Counter = Counter()
+    for s in sched:
+        d = s["suggested_next_date"]
+        if d <= (today + timedelta(days=7)).isoformat():
+            bucket[d] += 1
+    return {"items": items, "sched": sched, "by_subject": by_subject,
+            "hot": hot, "bucket": bucket, "today": today}
+
+
+def build_report(queue_path: Path, today: date, vault_root: Path | None = None) -> tuple[str, list[dict]]:
+    st = compute_stats(queue_path, today)
+    items, sched, by_subject, hot, bucket = (st[k] for k in
+                                             ("items", "sched", "by_subject", "hot", "bucket"))
+    lines = ["# 学习周报（{} 起）".format(today.isoformat()), ""]
+    # 1) 科目掌握概览
     lines += ["## 科目掌握概览", "", "| 科目 | 条目 | mastered | due | retesting | pending | 平均稳定性 | 7日内待复测 |",
               "| --- | --- | --- | --- | --- | --- | --- | --- |"]
     for sub, s in sorted(by_subject.items()):
