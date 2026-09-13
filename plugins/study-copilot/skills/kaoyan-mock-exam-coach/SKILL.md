@@ -10,6 +10,7 @@ description: 用原创题目或用户当前会话实际提供且有权使用的�
 - 始终读取并遵循[能力路由契约](../../references/capability-routing-contract.md)。
 - 出卷读取[证据与版权契约](../../references/evidence-copyright-contract.md)。
 - 明确交卷后生成 `ReviewQueue`，届时读取[便携学习记录契约](../../references/portable-learning-records.md)。
+- 组卷前可用 [端侧语义检索契约](../../references/local-semantic-retrieval-contract.md) 召回未掌握错题簇与 `confirmed` 错因，用于原创题考点覆盖加权（结果标 `[端侧检索]`；未就绪则跳过，不阻塞，且不引用任何历史原题面）。
 
 ## 边界与冻结
 

@@ -23,3 +23,9 @@ jobs:
 
       - name: Validate data records & subject profiles (Schema 1.1)
         run: python scripts/validate_records.py
+
+      - name: Semgrep security gate (secrets / user paths / shell exec)
+        run: |
+          python -m pip install --quiet semgrep
+          semgrep --config .semgrep.yml --error --metrics=off .
+
