@@ -51,12 +51,29 @@ def resolve(token: str, doc_dir: Path, root: Path) -> bool:
 
 
 def check(root: Path) -> list[str]:
+    import subprocess
+    tracked = set()
+    try:
+        out = subprocess.run(["git", "-C", str(root), "ls-files"], capture_output=True, text=True, timeout=30)
+        tracked = set(out.stdout.splitlines())
+    except (OSError, subprocess.TimeoutExpired):
+        pass  # 无 git 环境时退化为仅按存在性判断
+
+    def is_gitignored(token: str) -> bool:
+        if not tracked:
+            return False
+        prefix = token + "/"
+        return not any(t == token or t.startswith(prefix) for t in tracked)
+
     top = top_level_names(root)
     bad = []
     for doc in [root / "README.md"] + sorted((root / "docs").rglob("*.md")):
         if not doc.exists():
             continue
         for token in repo_path_tokens(doc.read_text(encoding="utf-8", errors="ignore"), top):
+            # 本地与 CI 一致：git 忽略的生成物路径（如索引目录）豁免存在性要求
+            if is_gitignored(token):
+                continue
             if not resolve(token, doc.parent, root):
                 bad.append("{}: {}".format(doc.relative_to(root), token))
     return bad

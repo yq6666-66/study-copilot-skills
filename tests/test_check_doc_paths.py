@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""check_doc_paths 单测：构造含好/坏路径引用的最小仓库，验证判定与豁免规则。"""
+"""check_doc_paths 单测。
+
+说明：真实仓库的完整门禁（含 git ls-files 豁免）在 CI 的 checkout 环境直接执行；
+此处用 tmp_path（无 git）专测判定与豁免规则的行为。
+"""
 import sys
 from pathlib import Path
 
