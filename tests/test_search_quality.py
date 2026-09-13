@@ -27,7 +27,7 @@ except ImportError:
     _HAS_FASTEMBED = False
 
 pytestmark = pytest.mark.skipif(
-    os.environ.get("CI") or not _HAS_MODEL or not _HAS_FASTEMBED,
+    bool(os.environ.get("CI")) or not _HAS_MODEL or not _HAS_FASTEMBED,
     reason="需本地 bge-small-zh 模型（download_model.py 预下载）；CI 自动跳过",
 )
 
