@@ -31,6 +31,9 @@ jobs:
       - name: Doc path references must exist (anti path-drift gate for AI-authored docs)
         run: python scripts/check_doc_paths.py
 
+      - name: Contract coverage gate (no dead links, no orphan contracts)
+        run: python scripts/check_contract_coverage.py
+
       - name: Semgrep security gate (secrets / user paths / shell exec)
         if: matrix.python-version == '3.12'
         run: |
