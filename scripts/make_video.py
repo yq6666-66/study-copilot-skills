@@ -4,7 +4,7 @@
 v3 相对 v2 的变化：
 - 新增三个分镜：FSRS 间隔复习调度 / Anki 导出+考前预练 / 六道 CI 门禁
 - 片头片尾计数标注改为动态读取 logs/qwen/（不再硬编码过时数字）
-- 配音文案全量更新至十六轮状态（38 次真实调用 / 92 tests / 六道门禁）
+- 配音文案全量更新至十六轮状态（36 次真实调用 / 97 tests / 六道门禁）
 
 用法：python scripts/make_video.py
 产物：dist/学习副驾演示视频.mp4（约 3.5 分钟，1080p/30fps，配音+烧录字幕）
@@ -148,7 +148,7 @@ def frames_s1():
         d.rounded_rectangle([x, 520, x + 330, 610], 16, outline=C_ACCENT, width=3)
         d.text((x + (330 - d.textlength(s, font=F_SUB)) / 2, 536), s, font=F_SUB, fill=C_ACCENT)
         x += 360
-    tag = f"云端引擎 · 阿里云 Qwen｜38 次真实调用全程留痕"
+    tag = f"云端引擎 · 阿里云 Qwen｜36 次真实调用全程留痕"
     d.text(((W - d.textlength(tag, font=F_SMALL)) / 2, 690), tag, font=F_SMALL, fill=C_YELLOW)
     yield [img], 2.4
 
@@ -335,7 +335,7 @@ def frames_s8():
 
 def frames_s9():
     yield [new_canvas("六道 CI 门禁 —— 质量不靠口头承诺")[0]], 0.4
-    gates = [("pytest", "92 个测试 × Python 3.10/3.11/3.12"),
+    gates = [("pytest", "97 个测试 × Python 3.10/3.11/3.12"),
              ("Schema 校验", "学习记录 1.1 + 科目配置"),
              ("文档路径", "AI 生成文档的路径漂移防线"),
              ("semgrep", "凭据 / 用户路径 / shell 执行"),

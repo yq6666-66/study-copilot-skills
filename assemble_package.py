@@ -140,8 +140,8 @@ def build_evidence(ev: Path) -> None:
             "- 01-用量总览.png：近 1 周 390 请求 / 226.9M tokens / 成功率 100.0%；模型分项 "
             "qwen3.8-max 282 次、qwen3.8-flash 281 次（平均延迟 26.9s）、qwen-flash 27 次，均 100% 成功。\n"
             "- 02-调用日志.png：逐条 Request ID / 模型 / token 明细（共 392 条，含输入/输出/图片 token 与时延）。\n\n"
-            "**口径区分（重要）**：本作品包代码链路产生的调用为 32 次（`logs/qwen/` 逐一留痕，"
-            "qwen-flash ×26 + qwen3.8-flash ×6），是上述控制台总量的真子集；"
+            "**口径区分（重要）**：本作品包代码链路产生的调用为 36 次（`logs/qwen/` 逐一留痕，"
+            "qwen-flash ×30 + qwen3.8-flash ×6），是上述控制台总量的真子集；"
             "其余为开发过程中以 Qwen 模型作为编程会话引擎产生的用量（qwen3.8-max 等）。"
             "两类用途在《AI技术实践说明》中分别披露，不混用、不夸大。\n", encoding="utf-8")
 
@@ -161,6 +161,10 @@ def main() -> int:
     ev.mkdir(parents=True)
 
     n_files = copy_source(show / "项目源码")
+    # 技术栈全景图放展示文件夹根层，评委解压第一眼可见
+    stack_img = REPO / "docs" / "competition" / "技术栈图.png"
+    if stack_img.exists():
+        shutil.copy2(stack_img, show / "技术栈图.png")
     vdir = show / "演示视频"
     vdir.mkdir()
     # 自动收集已生成的演示资产（scripts/make_video.py 的产物）
