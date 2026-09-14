@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-"""云端 Qwen 引擎（DashScope OpenAI 兼容接口）。
+"""云端模型引擎（OpenAI 兼容接口，服务商无关）。
 
 学习副驾的云端推理通道：默认承担「错题陪练」链路（变式复测出题与二次精讲）。
-每次真实调用写留痕日志到 logs/qwen/，作为 AI 实践佐证。
+任意 OpenAI 兼容的模型服务均可接入（OpenAI / DeepSeek / Kimi / 硅基流动 / 本地 Ollama 等），
+通过三个环境变量配置；每次真实调用写留痕日志到 logs/qwen/。
 
 用法（仓库根目录下运行）：
     python scripts/qwen_engine.py --system "..." --prompt "..."
-    python scripts/qwen_engine.py --messages-file msg.json --model qwen-plus
+    python scripts/qwen_engine.py --messages-file msg.json --model deepseek-chat
     python scripts/qwen_engine.py --dry-run --prompt "预览请求"
 
-鉴权：环境变量 DASHSCOPE_API_KEY（Windows 配置：setx DASHSCOPE_API_KEY "sk-..."）。
+配置（按优先级）：
+    OPENAI_BASE_URL  服务商兼容端点（如 https://api.openai.com/v1，自动拼 /chat/completions）
+    OPENAI_MODEL     模型名（或 LLM_MODEL）
+    OPENAI_API_KEY   密钥（或 LLM_API_KEY / DASHSCOPE_API_KEY，向后兼容）
 Key 只从环境变量读取，绝不写入日志。
 """
 from __future__ import annotations
@@ -24,10 +28,23 @@ from typing import List
 
 import requests
 
-ENDPOINT = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+DEFAULT_ENDPOINT = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
 DEFAULT_MODEL = "qwen-flash"
+KEY_ENV_VARS = ("OPENAI_API_KEY", "LLM_API_KEY", "DASHSCOPE_API_KEY")
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_ROOT / "logs" / "qwen"
+
+
+def endpoint() -> str:
+    """兼容端点：OPENAI_BASE_URL 优先（自动拼 /chat/completions），否则用默认端点。"""
+    base = os.environ.get("OPENAI_BASE_URL", "").rstrip("/")
+    if base:
+        return base + "/chat/completions"
+    return DEFAULT_ENDPOINT
+
+
+def default_model() -> str:
+    return os.environ.get("OPENAI_MODEL", "") or os.environ.get("LLM_MODEL", "") or DEFAULT_MODEL
 
 
 def build_messages(system: str | None, prompt: str | None, messages_file: str | None) -> List[dict]:
@@ -46,9 +63,9 @@ def build_messages(system: str | None, prompt: str | None, messages_file: str | 
 
 
 def _assert_no_secret(text: str) -> None:
-    key = os.environ.get("DASHSCOPE_API_KEY", "")
-    if key and key in text:
-        raise AssertionError("安全断言失败：输出内容包含 API Key，拒绝写入日志")
+    for key in _key_candidates():
+        if key in text:
+            raise AssertionError("安全断言失败：输出内容包含 API Key，拒绝写入日志")
 
 
 def _registry_key() -> str | None:
@@ -56,30 +73,46 @@ def _registry_key() -> str | None:
     try:
         import winreg
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
-            val, _ = winreg.QueryValueEx(k, "DASHSCOPE_API_KEY")
-            return val or None
+            for var in KEY_ENV_VARS:
+                try:
+                    val, _ = winreg.QueryValueEx(k, var)
+                    if val:
+                        return val or None
+                except OSError:
+                    continue
+            return None
     except (ImportError, OSError):
         return None
 
 
-def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: float = 0.7,
+def _key_candidates() -> List[str]:
+    """Key 候选链：OPENAI_API_KEY → LLM_API_KEY → DASHSCOPE_API_KEY（环境变量）→ Windows 注册表。"""
+    keys: List[str] = []
+    for var in KEY_ENV_VARS:
+        v = os.environ.get(var)
+        if v and v not in keys:
+            keys.append(v)
+    reg = _registry_key()
+    if reg and reg not in keys:
+        keys.append(reg)
+    return keys
+
+
+def call_qwen(messages: List[dict], model: str | None = None, temperature: float = 0.7,
               max_tokens: int | None = None, timeout: int = 60, log: bool = True) -> dict:
     """调用一次 chat/completions，返回含日志路径的结果字典。
 
-    Key 候选：进程环境变量 → Windows 注册表（用户级，防 setx 后进程滞后）。
+    model 为 None 时取 default_model()（OPENAI_MODEL / LLM_MODEL / 内置默认）。
+    Key 候选：进程环境变量（OPENAI_API_KEY 优先）→ Windows 注册表（防 setx 后进程滞后）。
     401 invalid_api_key 且还有下一个候选时自动切换重试。
     """
-    keys: List[str] = []
-    env_key = os.environ.get("DASHSCOPE_API_KEY")
-    if env_key:
-        keys.append(env_key)
-    reg_key = _registry_key()
-    if reg_key and reg_key not in keys:
-        keys.append(reg_key)
+    model = model or default_model()
+    keys = _key_candidates()
     if not keys:
         raise RuntimeError(
-            "未配置 DASHSCOPE_API_KEY。Windows 配置：setx DASHSCOPE_API_KEY \"sk-你的Key\"，"
-            "然后新开终端生效。无 Key 时请使用降级路径（会话内出题），不阻塞学习。"
+            "未配置云端模型密钥。请设置环境变量 OPENAI_API_KEY（兼容 LLM_API_KEY / DASHSCOPE_API_KEY），"
+            "Windows 执行 setx OPENAI_API_KEY \"<你的Key>\" 后新开终端。"
+            "无 Key 时请使用降级路径（会话内出题），不阻塞学习。"
         )
 
     payload = {"model": model, "messages": messages, "temperature": temperature}
@@ -91,7 +124,7 @@ def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: flo
     for ki, api_key in enumerate(keys):
         for attempt in (1, 2):
             resp = requests.post(
-                ENDPOINT,
+                endpoint(),
                 headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
                 json=payload, timeout=timeout,
             )
@@ -108,7 +141,7 @@ def call_qwen(messages: List[dict], model: str = DEFAULT_MODEL, temperature: flo
     latency_ms = int((time.time() - started) * 1000)
 
     if resp.status_code != 200:
-        raise RuntimeError("Qwen 调用失败 HTTP {}: {}{}".format(
+        raise RuntimeError("云端调用失败 HTTP {}: {}{}".format(
             resp.status_code, resp.text[:300], _http_action_hint(resp.status_code)))
 
     body = resp.json()
@@ -143,7 +176,7 @@ def stats(log_dir: Path = LOG_DIR) -> dict:
     """聚合全部调用留痕：按模型统计次数/token/时延分布与 finish_reason；复核日志不含 Key。"""
     if not log_dir.exists():
         return {"calls": 0, "note": "无留痕目录", "by_model": {}}
-    api_key = os.environ.get("DASHSCOPE_API_KEY") or _registry_key() or ""
+    api_keys = [k for k in _key_candidates() if k]
     total = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
     by_model: dict = {}
     latencies: list = []
@@ -167,7 +200,7 @@ def stats(log_dir: Path = LOG_DIR) -> dict:
             fr[record["finish_reason"]] = fr.get(record["finish_reason"], 0) + 1
         if record.get("latency_ms"):
             latencies.append(record["latency_ms"])
-        if api_key and api_key in f.read_text(encoding="utf-8"):
+        if api_keys and any(k in f.read_text(encoding="utf-8") for k in api_keys):
             key_leak += 1
     out = dict(total)
     out["by_model"] = by_model
@@ -179,22 +212,22 @@ def stats(log_dir: Path = LOG_DIR) -> dict:
 
 
 def _http_action_hint(status: int) -> str:
-    """面向使用者的可操作指引（错误体验改进；文案经 qwen3.8-flash 评审采纳，留痕 20260914-020602）。"""
+    """面向使用者的可操作指引。"""
     if status in (401, 403):
-        return (" → Key 可能失效或未开通：请到百炼控制台重建 Key；Windows 执行 setx DASHSCOPE_API_KEY \"sk-…\""
-                "并**新开终端**，macOS/Linux 执行 export DASHSCOPE_API_KEY=\"sk-…\" 后重试；"
-                "若仍失败，请确认模型服务已开通。")
+        return (" → Key 可能失效或未开通：请到你的模型服务商控制台重建 Key；Windows 执行 setx OPENAI_API_KEY \"<你的Key>\""
+                "并**新开终端**，macOS/Linux 执行 export OPENAI_API_KEY=\"<你的Key>\" 后重试；"
+                "若仍失败，请确认对应模型已开通。")
     if status == 429:
-        return (" → 触发限流/额度：请改用低成本模型重试（同命令加 --model qwen-flash）；"
+        return (" → 触发限流/额度：可改用低成本模型重试（配置 OPENAI_MODEL 或调用时传 --model）；"
                 "继续使用原模型请稍后重试，或走会话内降级。")
     if status >= 500:
-        return " → 服务端异常：稍后重试；持续失败请查看百炼服务状态。"
+        return " → 服务端异常：稍后重试；持续失败请查看你的模型服务商状态页。"
     return " → 原始请求与错误已打印；调用可通过 --dry-run 先行自检。"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="云端 Qwen 引擎（DashScope 兼容接口，调用全留痕）")
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser = argparse.ArgumentParser(description="云端模型引擎（OpenAI 兼容接口，任意服务商，调用全留痕）")
+    parser.add_argument("--model", default=None, help="模型名（默认取 OPENAI_MODEL/LLM_MODEL 或内置默认）")
     parser.add_argument("--system", default=None, help="system 提示词")
     parser.add_argument("--prompt", default=None, help="user 提示词")
     parser.add_argument("--messages-file", default=None, help="JSON 文件：完整 messages 数组")
@@ -218,9 +251,9 @@ def main() -> int:
         return 2
 
     if args.dry_run:
-        preview = {"model": args.model, "temperature": args.temperature,
+        preview = {"model": args.model or default_model(), "temperature": args.temperature,
                    "max_tokens": args.max_tokens, "messages": messages,
-                   "log_path_planned": str(LOG_DIR)}
+                   "endpoint": endpoint(), "log_path_planned": str(LOG_DIR)}
         print(json.dumps(preview, ensure_ascii=False, indent=2))
         return 0
 

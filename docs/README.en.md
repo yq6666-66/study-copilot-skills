@@ -47,9 +47,9 @@ python scripts/local_retrieval/semantic_search.py --query "banker's algorithm de
 python scripts/local_retrieval/embed_index.py --incremental   # re-encode changed docs only
 ```
 
-### Cloud variant-question coaching (optional; currently Alibaba Qwen)
+### Cloud variant-question coaching (optional · any OpenAI-compatible model service)
 
-With `DASHSCOPE_API_KEY` set, the agent can generate **variant questions and second-pass explanations** from confirmed error causes (never copying the original wording), and onboard new subjects (law exam, CPA, anything) as config packs. **Without a key everything works offline** — only the cloud-specific step degrades, and it says so instead of faking output.
+Once the cloud model environment variables are set, the agent can generate **variant questions and second-pass explanations** from confirmed error causes (never copying the original wording), and onboard new subjects (law exam, CPA, anything) as config packs. **Without configuration everything works offline** — only the cloud-specific step degrades, and it says so instead of faking output.
 
 ```bash
 python scripts/demo_pipeline.py --item r028             # edge recall → cloud variant question (--dry-cloud previews the prompt)
@@ -83,7 +83,7 @@ Vault integration is optional — the error queue is just a JSON file you own.
 
 - **Codex / Codex CLI**: `python install.py --host codex`
 - **Claude Code**: `python install.py --host claude-code` (into `~/.claude/skills/`)
-- **Any other agent**: `--host general --target <dir>`, then load the Markdown skills the way your agent expects.
+- **Any other agent**: `--host generic --target <dir>`, then load the Markdown skills the way your agent expects.
 
 ### Memory control
 
@@ -129,24 +129,28 @@ python scripts/validate_records.py        # validate data assets (Schema 1.1 + s
 # then ask your agent: "Which questions should I re-test today?"
 ```
 
-Cloud coaching is optional. To enable it (the key lives only in your local environment variables — this repo never stores secrets):
+Cloud coaching is optional and works with any OpenAI-compatible provider (OpenAI, DeepSeek, Kimi, SiliconFlow, local Ollama / vLLM, …). Credentials live only in your local environment variables — this repo never stores secrets:
 
-1. **Get a key**: sign in to the Alibaba Cloud Bailian console <https://bailian.console.aliyun.com> → "API-KEY" → create a new key.
-2. **Set the environment variable**:
+1. **Collect three values** from your provider's console: the compatible Base URL, a model name, and an API key.
+2. **Set three environment variables**:
 
    ```powershell
    # Windows (PowerShell) — reopen the terminal afterwards
-   setx DASHSCOPE_API_KEY "<your API key>"
+   setx OPENAI_BASE_URL "<provider endpoint, e.g. https://api.deepseek.com/v1>"
+   setx OPENAI_MODEL "<model name>"
+   setx OPENAI_API_KEY "<your API key>"
    ```
 
    ```bash
    # macOS / Linux (add to ~/.zshrc or ~/.bashrc to persist)
-   export DASHSCOPE_API_KEY="<your API key>"
+   export OPENAI_BASE_URL="<provider endpoint>"
+   export OPENAI_MODEL="<model name>"
+   export OPENAI_API_KEY="<your API key>"
    ```
 
 3. **Verify**: `python scripts/demo_pipeline.py --item r028` runs the full edge-recall → cloud variant-question chain (add `--dry-cloud` for an offline preview first).
 
-Without a key, every feature stays fully offline.
+Without configuration, every feature stays fully offline.
 
 ## Privacy
 

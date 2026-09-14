@@ -43,7 +43,7 @@ def pick_item(items, item_id=None):
     return items[0]
 
 
-def _default_chat(messages, model="qwen-flash"):
+def _default_chat(messages, model=None):
     from qwen_engine import call_qwen
     return call_qwen(messages, model=model)
 

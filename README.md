@@ -54,9 +54,9 @@ python scripts/local_retrieval/semantic_search.py --query "进程死锁检测和
 python scripts/local_retrieval/embed_index.py --incremental
 ```
 
-### 云端变式陪练（可选，当前接入阿里云 Qwen）
+### 云端变式陪练（可选 · 任意 OpenAI 兼容模型服务）
 
-配好 `DASHSCOPE_API_KEY` 后，Agent 可调用云端模型做**定向变式出题与二次精讲**：基于已确认的错因生成变式题（不复制原题面），并支持一键把新科目（法考 / CPA / 任意科目）接入为配置包。**未配置 Key 时全部功能照常离线可用**，仅云端专项降级并明示，不伪造生成结果。
+配置好云端模型环境变量后，Agent 可调用云端大模型做**定向变式出题与二次精讲**：基于已确认的错因生成变式题（不复制原题面），并支持一键把新科目（法考 / CPA / 任意科目）接入为配置包。**未配置时全部功能照常离线可用**，仅云端专项降级并明示，不伪造生成结果。
 
 ```bash
 # 一键端云协同演示：端侧召回相似错题 → 云端生成变式题（--dry-cloud 只预览 prompt）
@@ -93,7 +93,7 @@ python scripts/study_dashboard.py --queue demo-vault/30-知识/错题队列.json
 
 - **Codex / Codex CLI**：`python install.py --host codex`，装进 `~/.codex/` 插件目录。
 - **Claude Code**：`python install.py --host claude-code`，装进 `~/.claude/skills/`。
-- **其他 Agent**：任意能读 Markdown Skill 文件的 Agent，用 `--host general --target <目录>` 安装到指定位置后按该 Agent 的方式加载。
+- **其他 Agent**：任意能读 Markdown Skill 文件的 Agent，用 `--host generic --target <目录>` 安装到指定位置后按该 Agent 的方式加载。
 
 ### 记忆控制
 
@@ -161,24 +161,28 @@ python scripts/validate_records.py
 # 4. 对 Agent 说第一句话：「今天该复测哪些错题？」
 ```
 
-云端变式陪练为可选功能，配置 API Key 后启用（Key 只存你机器的环境变量，本仓库不保存任何密钥）：
+云端变式陪练为可选功能，接入任意 OpenAI 兼容的模型服务（OpenAI、DeepSeek、Kimi、硅基流动、本地 Ollama / vLLM 等均可）。密钥只存你机器的环境变量，本仓库不保存任何凭据：
 
-1. **获取 Key**：登录阿里云百炼控制台 <https://bailian.console.aliyun.com> → 左侧「API-KEY」→ 创建新的 API Key。
-2. **配置为环境变量**：
+1. **拿到三项信息**：在你选择的模型服务商控制台获取兼容端点（Base URL）、模型名和 API Key。
+2. **配置三个环境变量**：
 
    ```powershell
    # Windows（PowerShell）——配置后需重开终端生效
-   setx DASHSCOPE_API_KEY "<你的API Key>"
+   setx OPENAI_BASE_URL "<服务商兼容端点，如 https://api.deepseek.com/v1>"
+   setx OPENAI_MODEL "<模型名>"
+   setx OPENAI_API_KEY "<你的API Key>"
    ```
 
    ```bash
    # macOS / Linux（写入 ~/.zshrc 或 ~/.bashrc 可永久生效）
-   export DASHSCOPE_API_KEY="<你的API Key>"
+   export OPENAI_BASE_URL="<服务商兼容端点>"
+   export OPENAI_MODEL="<模型名>"
+   export OPENAI_API_KEY="<你的API Key>"
    ```
 
 3. **验证**：`python scripts/demo_pipeline.py --item r028` 跑通端侧召回 → 云端变式题全链路（先离线预览可加 `--dry-cloud`）。
 
-不配置 Key 则所有功能保持离线可用。
+不配置则所有功能保持离线可用。
 
 ## 15 个主责 Skill
 
@@ -197,7 +201,7 @@ python scripts/validate_records.py
 | `kaoyan-past-paper-analyst` | 分析已提供或已核验可访问的真题样本 | 「分析这套真题」 |
 | `kaoyan-material-study-assistant` | 把用户材料转成摘要、卡片、提纲或原创练习 | 「把讲义做成卡片」 |
 | `kaoyan-official-info-researcher` | 核验当年招考信息与录取数据 | 「查今年招生简章」 |
-| `kaoyan-qwen-drill` | 云端 Qwen 错题陪练：变式复测出题与二次精讲 | 「针对 r028 出变式题」 |
+| `kaoyan-qwen-drill` | 云端大模型错题陪练（任意 OpenAI 兼容服务）：变式复测出题与二次精讲 | 「针对 r028 出变式题」 |
 | `kaoyan-subject-onboarding` | 新科目接入向导：生成科目配置包并验证机制层零改动 | 「我要备考法考」 |
 
 > 学科命名中的「考研/408」是历史沿革；机制层科目无关，泛化改造按科目配置层推进。
