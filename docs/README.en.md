@@ -129,7 +129,24 @@ python scripts/validate_records.py        # validate data assets (Schema 1.1 + s
 # then ask your agent: "Which questions should I re-test today?"
 ```
 
-Cloud coaching is optional: set `DASHSCOPE_API_KEY` to enable it; without it the pack stays fully offline.
+Cloud coaching is optional. To enable it (the key lives only in your local environment variables — this repo never stores secrets):
+
+1. **Get a key**: sign in to the Alibaba Cloud Bailian console <https://bailian.console.aliyun.com> → "API-KEY" → create a new key.
+2. **Set the environment variable**:
+
+   ```powershell
+   # Windows (PowerShell) — reopen the terminal afterwards
+   setx DASHSCOPE_API_KEY "<your API key>"
+   ```
+
+   ```bash
+   # macOS / Linux (add to ~/.zshrc or ~/.bashrc to persist)
+   export DASHSCOPE_API_KEY="<your API key>"
+   ```
+
+3. **Verify**: `python scripts/demo_pipeline.py --item r028` runs the full edge-recall → cloud variant-question chain (add `--dry-cloud` for an offline preview first).
+
+Without a key, every feature stays fully offline.
 
 ## Privacy
 

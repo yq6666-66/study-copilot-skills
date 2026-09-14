@@ -161,7 +161,24 @@ python scripts/validate_records.py
 # 4. 对 Agent 说第一句话：「今天该复测哪些错题？」
 ```
 
-云端变式陪练为可选项：`setx DASHSCOPE_API_KEY "sk-..."` 后重开终端即启用；不配置则保持离线。
+云端变式陪练为可选功能，配置 API Key 后启用（Key 只存你机器的环境变量，本仓库不保存任何密钥）：
+
+1. **获取 Key**：登录阿里云百炼控制台 <https://bailian.console.aliyun.com> → 左侧「API-KEY」→ 创建新的 API Key。
+2. **配置为环境变量**：
+
+   ```powershell
+   # Windows（PowerShell）——配置后需重开终端生效
+   setx DASHSCOPE_API_KEY "<你的API Key>"
+   ```
+
+   ```bash
+   # macOS / Linux（写入 ~/.zshrc 或 ~/.bashrc 可永久生效）
+   export DASHSCOPE_API_KEY="<你的API Key>"
+   ```
+
+3. **验证**：`python scripts/demo_pipeline.py --item r028` 跑通端侧召回 → 云端变式题全链路（先离线预览可加 `--dry-cloud`）。
+
+不配置 Key 则所有功能保持离线可用。
 
 ## 15 个主责 Skill
 
