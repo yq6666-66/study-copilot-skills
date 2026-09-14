@@ -18,13 +18,7 @@ def _fake_root(tmp: Path, doc_calls: int = 2, logs_calls: int = 2, readme_extra_
             "model": "qwen-flash", "usage": {"total_tokens": 100}}), encoding="utf-8")
     docs = tmp / "docs" / "competition"
     docs.mkdir(parents=True)
-    table = "\n".join("| {} | x | y | `20260913-21{:02d}00` |".format(i + 1, i) for i in range(doc_calls))
     detail = "\n".join("| 20260913-21{:02d}00 | qwen-flash | 100 | 50 |".format(i) for i in range(doc_calls))
-    (tmp / "README.md").write_text(
-        "以下 **{} 次调用**均为\n模型：`qwen-flash` ×{}、`qwen3.8-flash` ×0\n".format(
-            doc_calls, doc_calls) + table, encoding="utf-8")
-    (tmp / "docs" / "README.en.md").write_text(
-        "**{} real calls**, every one trace-logged".format(doc_calls), encoding="utf-8")
     (docs / "千问证据总览.md").write_text(
         "真实调用：**{} 次**\n累计 token：**{}**\n".format(doc_calls, doc_calls * 100) + detail, encoding="utf-8")
     (docs / "AI技术实践说明.md").write_text(
@@ -42,7 +36,7 @@ def test_drifted_doc_count_detected(tmp_path):
     root = _fake_root(tmp_path, doc_calls=3, logs_calls=2)
     bad = cn.check(root)
     joined = " ".join(bad)
-    assert "README.md" in joined and "证据总览" in joined
+    assert "证据总览" in joined and "实践说明" in joined
 
 
 def test_wrong_token_sum_detected(tmp_path):
@@ -52,8 +46,9 @@ def test_wrong_token_sum_detected(tmp_path):
     assert any("token" in b for b in cn.check(root))
 
 
-def test_missing_model_distribution_detected(tmp_path):
+def test_missing_practice_sentence_detected(tmp_path):
     root = _fake_root(tmp_path)
-    r = root / "README.md"
-    r.write_text(r.read_text(encoding="utf-8").replace("×2", "×1"), encoding="utf-8")
-    assert any("模型分布" in b for b in cn.check(root))
+    prac = root / "docs" / "competition" / "AI技术实践说明.md"
+    prac.write_text(prac.read_text(encoding="utf-8").replace(
+        "共 {} 次真实调用全部留痕".format(2), "调用若干次"), encoding="utf-8")
+    assert any("实践说明" in b for b in cn.check(root))

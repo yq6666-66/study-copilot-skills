@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-"""材料数字一致性门禁（第六道）：README（中/英）、证据总览、AI 技术实践说明中声明的
+"""材料数字一致性门禁（第六道）：比赛材料（千问证据总览、AI 技术实践说明）中声明的
 调用次数、模型分布、token 累计与留痕表行数，必须与真实留痕一致。
+开源 README 面向使用者、不含调用统计口径，不在本校验范围。
 
 真值来源（双模式）：
 - 本地：logs/qwen/ 全量留痕（同时校验仓库内脱敏索引与之一致，防索引漂移）；
@@ -95,18 +96,7 @@ def check(root: Path = REPO) -> list[str]:
         if got != expected:
             bad.append("{}: 声明 {}，实际应为 {}".format(label, got, expected))
 
-    readme = _read(root / "README.md")
-    want(readme, r"以下 \*\*(\d+) 次调用\*\*", t["calls"], "README.md 调用数")
-    for model, n in t["by_model"].items():
-        if "`{}` ×{}".format(model, n) not in readme:
-            bad.append("README.md: 模型分布缺 {} ×{}".format(model, n))
-    table_rows = len(re.findall(r"^\|\s*\d+\s*\|[^|]*\|[^|]*\|\s*`2026\d{4}-\d{6}`\s*\|\s*$", readme, re.M))
-    if table_rows != t["calls"]:
-        bad.append("README.md: 实录表 {} 行 ≠ 留痕 {} 份".format(table_rows, t["calls"]))
-
-    en = _read(root / "docs" / "README.en.md")
-    want(en, r"(\d+) real (?:requests|calls)", t["calls"], "README.en.md 调用数")
-
+    # 开源 README 面向使用者，不含调用统计；比赛材料（下方两份）才做数字一致性校验。
     ov = _read(root / "docs/competition/千问证据总览.md")
     want(ov, r"真实调用：\*\*(\d+) 次\*\*", t["calls"], "证据总览 调用数")
     want(ov, r"累计 token：\*\*([\d,]+)\*\*", t["tokens"], "证据总览 token 累计")

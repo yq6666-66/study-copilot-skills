@@ -6,82 +6,123 @@
 
 **学习副驾**是一套纯 Skills 的学习认知引擎：不依赖任何后台服务，把它装进你的 AI Agent（Codex、Claude Code 等），Agent 就拥有跨会话的学习记忆、错题闭环、间隔复测、学习规划、进度诊断与原创模考能力。
 
-> 仓库：https://github.com/yq6666-66/study-copilot-skills ｜ 前作（408考研插件 v2.4.0）：https://github.com/yq6666-66/408-codex-plugin
-
 前身是 [408考研插件](https://github.com/yq6666-66/408-codex-plugin)（kaoyan-408 v2.4.0）。本项目的核心升级是把学习机制从「考研专用」泛化为两层通用：
 
 1. **任何 Agent** —— Skills 核心与宿主解耦，通过适配层安装到不同 AI Agent。
 2. **任何科目** —— 学习机制层天然科目无关（错题、规划、诊断、模考的数据 Schema 中科目就是自由字段）；学科内容由「科目配置包」驱动，预置考研包，新科目可由向导生成。
 
-## 特性
+## 功能总览
 
-- 🔁 **错题闭环**：跨题聚类错因（区分已确认与假设）、间隔复测排期、延迟掌握证据判定
-- 📅 **规划与执行**：按目标日期倒排的阶段/月度/周度计划，展开为立即可做的时间盒
-- 📊 **进度诊断**：基于记录的诊断，不凭空生成进度
-- 📝 **原创模考**：冻结题面组织模考，交卷前不讲题
-- 🧠 **本地学习记忆**：可选接入用户自己的 Obsidian Vault，跨会话记忆只存本地
-- 🔍 **端侧语义检索**（新增）：本地 CPU 运行 embedding 模型，为错题队列/真题索引做语义检索，与云端大模型协同
-- 📦 **科目配置驱动**：`subjects/` 预置考研包；法考、CPA、高考等新科目由 `subject-onboarding` 向导接入
-- ⏱️ **FSRS 间隔复习调度**（新增）：`scripts/scheduler.py` 实现开源 FSRS 核心（遗忘曲线/初始稳定性/均值回归阻尼，引用 open-spaced-repetition/fsrs-rs），为每条错题算建议复习日与今日可提取概率
-- 📈 **学习周报生成器**（新增）：`scripts/study_report.py` 产出周报（掌握概览/错题热点/7 天 FSRS 负载），洞察段由云端 Qwen 生成并留痕（示例见 `docs/competition/学习周报示例.md`）
-- 🗂️ **Anki 导出器**（新增）：`scripts/export_anki.py` 把错题队列导出为 Anki 可导入 CSV（含 FSRS 稳定性/难度/建议复习日字段；Front 只含回忆问题）；`--qwen-prompts` 可选由 Qwen 改写卡片措辞并留痕（示例 `docs/competition/anki导出示例.csv`）
-- 📊 **静态 HTML 学习仪表盘**（新增）：`scripts/study_dashboard.py` 单文件零 JS 渲染（掌握度四色块/7 天 FSRS 负载条/遗忘曲线 SVG/错题热点）；`--qwen-summary` 由 Qwen 写执行摘要并留痕（示例 `docs/competition/学习仪表盘示例.html`）
-- 🎯 **考前预练 CLI**（新增）：`scripts/pre_drill.py` 三引擎串联——端侧语义召回相似历史错题 → 云端 Qwen 出定向变式预练卷（`--qwen` 留痕）→ Markdown 输出；`--no-qwen` 离线模式（示例 `docs/competition/考前预练示例.md`）
+### 错题闭环
 
-## Qwen 使用实录
+- **错因聚类**：跨题聚类错因，严格区分「已确认」与「假设」两种状态；假设错因在复测通过前不参与掌握判定。
+- **间隔复测排期**：内置 [FSRS](https://github.com/open-spaced-repetition/fsrs4anki) 调度（遗忘曲线 / 初始稳定性 / 均值回归阻尼），按你的历史评分动态计算每条错题的建议复习日与今日可提取概率。
+- **掌握证据判定**：复测通过不算掌握——延迟一段时间后再次复测仍通过，才升级为「已掌握」并移出活跃队列。
+- 边界：不凭空推断错因；用户未给出的部分一律标记为假设并要求确认。
 
-以下 **36 次调用**均为对 DashScope（`qwen-flash` 与 `qwen3.8-flash`）的真实请求，留痕（消息/回复/token/时延）存于 [`logs/qwen/`](logs/qwen/)，生成物均已入库；本节初稿亦由 Qwen 撰写（第 10 次）后经人工校对。
+### 规划与执行
 
-| # | 链路 | 入库实物 | 留痕 |
-|---|------|----------|------|
-| 1 | 408 错题陪练 | `原创变式选择题（LRU vs FIFO）+ 页框推演解析` | `20260913-211223` |
-| 2 | 数学一错题陪练 | `双错因各一道设陷阱变式题` | `20260913-230125` |
-| 3 | 法考科目配置生成 | `subjects/fakao/profile.json` | `20260913-230153` |
-| 4 | 错因聚类分析 | `docs/competition/qwen错因聚类报告.md` | `20260913-230428` |
-| 5 | 体验文档 FAQ | `体验说明「常见问题」小节` | `20260913-230430` |
-| 6 | 注会科目配置生成 | `subjects/cpa/profile.json` | `20260913-231650` |
-| 7 | 原创练习集 01 | `demo-vault/30-知识/原创练习/原创练习集01.md` | `20260913-231704` |
-| 8 | 英语一写作练习 | `demo-vault/30-知识/原创练习/英语一写作练习.md` | `20260913-231711` |
-| 9 | 代码审查 №1 | `docs/competition/qwen代码审查报告.md` | `20260913-231715` |
-| 10 | 本节初稿撰写 | `README「Qwen 使用实录」` | `20260913-232552` |
-| 11 | 原创练习集 02 | `demo-vault/30-知识/原创练习/原创练习集02.md` | `20260913-232621` |
-| 12 | 政治背诵卡片 | `demo-vault/30-知识/原创练习/政治背诵卡片.md` | `20260913-232628` |
-| 13 | 卷种差异对比 | `subjects/kaoyan/卷种差异对比.md` | `20260913-232633` |
-| 14 | 错题复测周报 | `demo-vault/20-项目/周报-Qwen.md` | `20260913-232635` |
-| 15 | 代码审查 №2（引擎自审） | `docs/competition/qwen代码审查报告2.md` | `20260913-232638` |
-| 16 | 新科目接入教程 | `docs/新科目接入教程.md` | `20260913-232648` |
-| 17 | qwen3.8-flash 连通验证 | `该型号首次调用` | `20260913-234305` |
-| 18 | 代码审查 №3 | `qwen代码审查报告3.md（4 条意见全部采纳落地）` | `20260913-234708` |
-| 19 | Skill 提示词优化 | `kaoyan-qwen-drill/SKILL.md 升级版` | `20260913-235015` |
-| 20 | 双模型对比 · qwen-flash | `docs/competition/双模型对比报告.md` | `20260913-235032` |
-| 21 | 双模型对比 · qwen3.8-flash | `同上（token/输出差异如实记录）` | `20260913-235047` |
-| 22 | 下周复测计划表 | `demo-vault/20-项目/复测计划-Qwen.md` | `20260914-000025` |
-| 23 | 演示管道全链路 | `scripts/demo_pipeline.py 实跑产出` | `20260914-005709` |
-| 24 | 架构文档初稿 | `docs/ARCHITECTURE.md（人工审校删 1 处幻觉）` | `20260914-014216` |
-| 25 | CLI 错误文案评审 | `评审建议 3 条采纳 + 抓出埋入的事实错误` | `20260914-020602` |
-| 26 | 英文 README 初稿 | `docs/README.en.md（审校修 4 处过时数字）` | `20260914-030050` |
-| 27 | 学习周报洞察段 | `docs/competition/学习周报示例.md` | `20260914-034212` |
-| 28 | Anki 卡片措辞改写 | `docs/competition/anki导出示例.csv` | `20260914-035446` |
-| 29 | 仪表盘摘要 v1 | `学习仪表盘示例.html 首版` | `20260914-040220` |
-| 30 | 仪表盘摘要 v2 | `同上（含热点区定稿）` | `20260914-040357` |
-| 31 | 考前预练 v1 | `docs/competition/考前预练示例.md` | `20260914-041149` |
-| 32 | 考前预练 v2 | `同上（摘录修复后定稿）` | `20260914-041238` |
-| 33 | 可行性实跑预练 | `dist/run_demo.py 21 步验证` | `20260914-044112` |
-| 34 | 可行性实跑预练 v2 | `同上（幂等修正）` | `20260914-044146` |
-| 35 | 考前预练 v3 | `dist/predrill_qwen_demo.md` | `20260914-094924` |
-| 36 | demo_pipeline 全链路 v2 | `dist/pipeline_qwen_demo.md` | `20260914-095010` |
+- **目标倒排**：按考试目标日期倒排阶段 / 月度 / 周度计划，自动处理跨科配额与冲突。
+- **时间盒展开**：把「本周要完成什么」展开为立即可做的时间盒任务，做完即记录。
+- 边界：计划基于既有记录与用户输入生成，不虚构进度。
 
-覆盖科目域：数学一 / 408（数据结构·组成原理·操作系统）/ 英语一 / 政治 / 法考 / 注册会计师；模型：`qwen-flash` ×30、`qwen3.8-flash` ×6。
+### 进度诊断与原创模考
 
-### 会话级深度优化（qwen3.8-flash 直接驱动本项目开发，三轮）
+- **进度诊断**：只基于真实学习记录（错题、复测、计划完成度）输出偏差、风险与调整信号。
+- **原创模考**：组织冻结题面的原创模考，交卷前不讲题、不提示；阅卷后回流错题闭环。
+- 边界：题面缺失或答案冲突时明确报告，不猜测补全。
 
-除 API 调用外，本项目的深度优化由 **qwen3.8-flash 作为 ZCode 编程会话的驱动模型直接完成**（2026-09-14，共七轮）：①端侧向量缓存 + 引擎 `--stats` 留痕聚合；②新建 GitHub Actions CI（首跑抓出 2 个跨平台 bug 修复转绿）+ 真增量索引 + 检索质量端到端测试；③一键端云协同演示管道 `demo_pipeline.py` + 性能基准 `bench.py`（2000 条实测增量 19×、查询 p95 29ms；基准反手抓出缓存 JSON 负优化与测量方法两处自身 bug 并修复）；④semgrep 安全门禁入 CI（首跑抓出文档 2 处用户路径泄露并脱敏）+ 规划/模考接入端侧检索；⑤`docs/ARCHITECTURE.md`（qwen3.8-flash 初稿 + 人工审校删 1 处虚构历史幻觉，路径核验固化为 CI 门禁）；⑥CLI 错误消息可操作化（qwen3.8-flash 文案评审采纳，含埋点事实校验）。全套 56 tests，**Python 3.10/3.11/3.12 版本矩阵**与五道 CI 门禁（pytest / Schema / 文档路径 / semgrep / 契约覆盖度）常绿（最新 run `34775399129`，Actions 公开可查）。完整证据与核验方式见 [docs/competition/Qwen会话优化实录.md](docs/competition/Qwen会话优化实录.md)。
+### 学科辅导与真题工作流
 
-> **能力边界声明**：Qwen 承担错题陪练、科目配置、内容创作、数据分析与代码评审等专项链路；常规推理由宿主 Agent 自身模型完成；开发过程辅助（GLM + Qwen）见 PRIVACY.md 披露。所有 `[Qwen生成]` 标注均对应真实调用留痕，无调用则不标注。
+- 四科学科辅导（408 / 数学 / 英语 / 政治）：概念讲解、单题讲评（可要求「只指第一处错误」）、专项训练。
+- **真题两件套**：真题来源搜索与许可核验（无授权不抓取）、对已核验样本的分析；重复来源自动去重。
+- **材料学习**：把你自己的讲义 / 笔记转成摘要、卡片、提纲或原创练习。
+- **官方信息核验**：核验当年招考信息与录取数据，标注来源与时效。
+
+### 端侧语义检索（本地 AI PC，数据不出域）
+
+本地 CPU 运行 embedding 模型（bge-small-zh-v1.5，ONNX）为错题队列与笔记建立语义索引，毫秒级召回相似历史错题；向量缓存 + 增量索引让 2000 条规模改 1% 数据的重索引从 7.3s 降到 0.39s（19×）。模型不可用时自动退化为关键词匹配，功能不中断。
+
+```bash
+# 建索引（首次自动下载模型；--fake 可离线冒烟）
+python scripts/local_retrieval/embed_index.py
+
+# 语义检索相似错题 / 笔记
+python scripts/local_retrieval/semantic_search.py --query "进程死锁检测和银行家算法又算错了" --top-k 5
+
+# 增量更新（只重编码变更部分）
+python scripts/local_retrieval/embed_index.py --incremental
+```
+
+### 云端变式陪练（可选，当前接入阿里云 Qwen）
+
+配好 `DASHSCOPE_API_KEY` 后，Agent 可调用云端模型做**定向变式出题与二次精讲**：基于已确认的错因生成变式题（不复制原题面），并支持一键把新科目（法考 / CPA / 任意科目）接入为配置包。**未配置 Key 时全部功能照常离线可用**，仅云端专项降级并明示，不伪造生成结果。
+
+```bash
+# 一键端云协同演示：端侧召回相似错题 → 云端生成变式题（--dry-cloud 只预览 prompt）
+python scripts/demo_pipeline.py --item r028
+
+# 考前预练：端侧召回 → 定向变式卷 → Markdown 输出（--no-qwen 离线模式）
+python scripts/pre_drill.py --index demo-vault/30-知识/.index --topic 进程死锁 银行家算法 --qwen
+```
+
+### 学习工具链
+
+```bash
+python scripts/study_report.py --queue demo-vault/30-知识/错题队列.json          # 学习周报（掌握概览/错题热点/FSRS 负载）
+python scripts/export_anki.py --queue demo-vault/30-知识/错题队列.json --out anki.csv   # 导出 Anki 卡片（含 FSRS 字段）
+python scripts/study_dashboard.py --queue demo-vault/30-知识/错题队列.json --out dash.html  # 静态 HTML 仪表盘（遗忘曲线 SVG）
+```
+
+## 数据与记忆
+
+学习数据全部落在用户本地，格式可携带：
+
+| 内容 | 落点 |
+| --- | --- |
+| 错题队列 | `demo-vault/30-知识/错题队列.json`（ReviewQueue Schema 1.1，字段含错因状态 / FSRS 稳定性难度 / 复测历史） |
+| 端侧向量索引 | `<语料>/30-知识/.index/`（向量 + npz 缓存，纯本地文件） |
+| 学习记忆 | 用户自己的 Obsidian Vault（`00-系统 / 20-项目 / 30-知识 / 40-真题` 四目录约定） |
+| 科目配置 | `subjects/<科目>/profile.json`（考研预置；新科目由向导生成同构配置） |
+
+不接 Vault 也能用：错题队列就是一个 JSON 文件，放在哪里、叫什么由你决定。
+
+## 使用方法
+
+### 在哪里使用
+
+- **Codex / Codex CLI**：`python install.py --host codex`，装进 `~/.codex/` 插件目录。
+- **Claude Code**：`python install.py --host claude-code`，装进 `~/.claude/skills/`。
+- **其他 Agent**：任意能读 Markdown Skill 文件的 Agent，用 `--host general --target <目录>` 安装到指定位置后按该 Agent 的方式加载。
+
+### 记忆控制
+
+- 不接 Vault：学习记录只存在错题队列 JSON，删掉即清空，无任何隐藏状态。
+- 接 Vault：笔记与复盘写入你指定的 Vault 目录，路径在科目配置中声明；安装器与 Skill 只写入这些目录，**绝不触碰其他路径**。
+- 卸载：`--uninstall` 按安装清单精确清理，学习数据目录不在清理范围。
+
+### 常用问法
+
+装好后直接对 Agent 说（以下均可直接复制）：
+
+| 场景 | 示例问法 |
+| --- | --- |
+| 录入错题 | 「把这道题记入错题队列，我的错因是……，状态先记为假设」 |
+| 错因聚类与复测 | 「整理 408-操作系统的错题，把错因相近的聚成簇，按 FSRS 安排复测」 |
+| 今日复习清单 | 「今天该复测哪些错题？给出清单和每条的可提取概率」 |
+| 生成计划 | 「目标 12 月 21 日初试，倒排未来 8 周计划并展开为本周时间盒」 |
+| 讲题 | 「讲这道题，只指出我的第一处错误，先别给答案」 |
+| 变式陪练 | 「针对错题 r028 的已确认错因出一道变式题考我，答完再讲评」 |
+| 考前预练 | 「明天考操作系统，就“进程死锁与银行家算法”出一份考前预练卷」 |
+| 原创模考 | 「组织一次 408 模考，冻结题面，交卷前不讲题」 |
+| 进度诊断 | 「诊断我最近两周的进度偏差和风险，给出调整建议」 |
+| 语义检索 | 「和我之前哪道错题最像：“页缺失中断处理流程”？」 |
+| 周报 / Anki | 「生成本周学习周报」「把当前错题队列导出成 Anki 卡片」 |
+| 新科目接入 | 「我要备考法考，生成法考科目配置包」（走 `kaoyan-subject-onboarding` 向导） |
 
 ## 架构
 
-> 详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)——初稿由云端 qwen3.8-flash 基于真实结构生成（留痕可查），人工审校修正路径与表述并**删除了一处虚构的历史叙述（AI 幻觉）**；文档路径引用由 CI 中的 `scripts/check_doc_paths.py` 门禁持续校验。
+详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -107,55 +148,40 @@
 git clone https://github.com/yq6666-66/study-copilot-skills.git
 cd study-copilot-skills
 
-# 任一宿主（自动探测 Codex / Claude Code；--dry-run 先预览）
+# 1. 预览将安装的内容（不写入任何文件）
+python install.py --list
 python install.py --host auto --dry-run
-python install.py --host claude-code     # 装到 ~/.claude/skills/（Codex 用户: --host codex）
 
-# 校验数据资产（Schema 1.1 + 科目配置）
+# 2. 安装到你的 Agent（auto 自动探测 Codex / Claude Code）
+python install.py --host claude-code     # Codex 用户: --host codex
+
+# 3. 校验数据资产（Schema 1.1 + 科目配置）
 python scripts/validate_records.py
 
-# 一键体验端云协同（真实模型 + 真实 Qwen 调用留痕；--dry-cloud 可离线）
-python scripts/demo_pipeline.py --item r028
-
-# 5 分钟体验路径见 docs/competition/体验说明.md
+# 4. 对 Agent 说第一句话：「今天该复测哪些错题？」
 ```
 
-## 目录结构
-
-```
-study-copilot-skills/
-├── plugins/study-copilot/     # Skills 核心（13 个主责 Skill + 21 个契约）
-│   ├── skills/
-│   ├── references/            # 行为契约与数据 Schema
-│   ├── assets/
-│   └── .codex-plugin/plugin.json
-├── adapters/                  # 宿主适配层
-├── subjects/                  # 科目配置包（考研预置 + 向导）
-├── scripts/local_retrieval/   # 端侧语义检索（embedding 索引/查询）
-├── demo-vault/                # 脱敏演示 Vault
-├── docs/competition/          # 参赛文档（AI 技术实践说明等）
-└── tests/                     # pytest 测试
-```
+云端变式陪练为可选项：`setx DASHSCOPE_API_KEY "sk-..."` 后重开终端即启用；不配置则保持离线。
 
 ## 15 个主责 Skill
 
-| Skill | 主责意图 |
-| --- | --- |
-| `kaoyan-408-planner` | 阶段、月度、周度、目标日期倒排和跨科配额 |
-| `kaoyan-review-executor` | 把既有计划或本次目标展开为立即可做的时间盒 |
-| `kaoyan-progress-diagnostician` | 根据记录诊断偏差、风险和调整信号 |
-| `kaoyan-error-loop-coach` | 跨题聚类错因、复测和掌握证据 |
-| `kaoyan-mock-exam-coach` | 组织原创或用户授权的冻结题面模考 |
-| `kaoyan-408-tutor` | 408 概念、单题、题面缺失和答案冲突 |
-| `kaoyan-math-coach` | 数学一/二概念、单题、第一处错误和专项训练 |
-| `kaoyan-english-coach` | 英语一/二阅读、翻译、完形、新题型和写作 |
-| `kaoyan-politics-coach` | 政治理论、材料题、作答批改和背诵复测 |
-| `kaoyan-past-paper-searcher` | 发现、核验、许可判断、去重和登记真题来源 |
-| `kaoyan-past-paper-analyst` | 分析已提供或已核验可访问的真题样本 |
-| `kaoyan-material-study-assistant` | 把用户材料转成摘要、卡片、提纲或原创练习 |
-| `kaoyan-official-info-researcher` | 核验当年招考信息与录取数据 |
-| `kaoyan-qwen-drill` | 云端 Qwen 错题陪练：变式复测出题与二次精讲 |
-| `kaoyan-subject-onboarding` | 新科目接入向导：生成科目配置包并验证机制层零改动 |
+| Skill | 主责 | 示例触发 |
+| --- | --- | --- |
+| `kaoyan-408-planner` | 阶段、月度、周度、目标日期倒排和跨科配额 | 「倒排未来 8 周计划」 |
+| `kaoyan-review-executor` | 把既有计划或本次目标展开为立即可做的时间盒 | 「展开为本周时间盒」 |
+| `kaoyan-progress-diagnostician` | 根据记录诊断偏差、风险和调整信号 | 「诊断最近两周进度」 |
+| `kaoyan-error-loop-coach` | 跨题聚类错因、复测和掌握证据 | 「整理错题并安排复测」 |
+| `kaoyan-mock-exam-coach` | 组织原创或用户授权的冻结题面模考 | 「组织一次模考」 |
+| `kaoyan-408-tutor` | 408 概念、单题、题面缺失和答案冲突 | 「讲这道题」 |
+| `kaoyan-math-coach` | 数学一/二概念、单题、第一处错误和专项训练 | 「只指第一处错误」 |
+| `kaoyan-english-coach` | 英语一/二阅读、翻译、完形、新题型和写作 | 「批改这篇作文」 |
+| `kaoyan-politics-coach` | 政治理论、材料题、作答批改和背诵复测 | 「这题怎么答」 |
+| `kaoyan-past-paper-searcher` | 发现、核验、许可判断、去重和登记真题来源 | 「找历年真题」 |
+| `kaoyan-past-paper-analyst` | 分析已提供或已核验可访问的真题样本 | 「分析这套真题」 |
+| `kaoyan-material-study-assistant` | 把用户材料转成摘要、卡片、提纲或原创练习 | 「把讲义做成卡片」 |
+| `kaoyan-official-info-researcher` | 核验当年招考信息与录取数据 | 「查今年招生简章」 |
+| `kaoyan-qwen-drill` | 云端 Qwen 错题陪练：变式复测出题与二次精讲 | 「针对 r028 出变式题」 |
+| `kaoyan-subject-onboarding` | 新科目接入向导：生成科目配置包并验证机制层零改动 | 「我要备考法考」 |
 
 > 学科命名中的「考研/408」是历史沿革；机制层科目无关，泛化改造按科目配置层推进。
 

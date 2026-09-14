@@ -81,7 +81,7 @@ Qwen 在作品中承担六类**真实发生**的链路，全部经 DashScope 接
 1. `logs/qwen/` 真实调用留痕 JSON × 38（消息、回复、usage、时延）——总览见 ZIP 根层《千问证据总览.md》
 2. Qwen API 平台侧官方记录：`06-DashScope控制台用量/` 两张截图（用量总览 + 392 条调用日志）+ 引擎输出截图
 3. 端侧检索真实运行：`embed_index` 建索引输出 + `semantic_search` 双科目查询（含相似度分数）
-4. Qwen 生成并入库的实物（17 件）：法考/注会配置包、原创练习集 01/02、英语一写作、政治卡片、复测周报、错因聚类报告、卷种差异对比、代码审查×3、接入教程、README「Qwen 使用实录」专节、体验说明 FAQ、ARCHITECTURE 初稿
+4. Qwen 生成并入库的实物（16 件）：法考/注会配置包、原创练习集 01/02、英语一写作、政治卡片、复测周报、错因聚类报告、卷种差异对比、代码审查×3、接入教程、体验说明 FAQ、ARCHITECTURE 初稿
 5. 关键代码：`scripts/qwen_engine.py`（401 注册表候选切换、防泄漏断言）、`scripts/local_retrieval/`（检索/缓存/增量）、`scripts/scheduler.py`（FSRS）、`scripts/pre_drill.py`
 6. Prompt 设计：`kaoyan-qwen-drill/SKILL.md` + 引擎 `--system/--prompt` + `qwen-engine-contract.md`
 7. 测试记录：`python -m pytest tests/ -q` 输出
