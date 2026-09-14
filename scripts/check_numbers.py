@@ -100,7 +100,7 @@ def check(root: Path = REPO) -> list[str]:
     for model, n in t["by_model"].items():
         if "`{}` ×{}".format(model, n) not in readme:
             bad.append("README.md: 模型分布缺 {} ×{}".format(model, n))
-    table_rows = len(re.findall(r"\|\s*\d+\s*\|[^|]*\|[^|]*\|\s*`2026\d{4}-\d{6}`", readme))
+    table_rows = len(re.findall(r"^\|\s*\d+\s*\|[^|]*\|[^|]*\|\s*`2026\d{4}-\d{6}`\s*\|\s*$", readme, re.M))
     if table_rows != t["calls"]:
         bad.append("README.md: 实录表 {} 行 ≠ 留痕 {} 份".format(table_rows, t["calls"]))
 

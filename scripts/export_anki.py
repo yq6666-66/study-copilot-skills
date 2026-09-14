@@ -94,6 +94,35 @@ def export_csv_text(queue_json_text: str, today: date, only_active: bool = False
     return buf.getvalue()
 
 
+def _neutralize(cell: str) -> str:
+    """CSV 公式注入中和：Excel 会把 = + - @ 开头的单元格当公式执行。"""
+    if cell[:1] in ("=", "+", "@", "\t", "\r"):
+        return "'" + cell
+    return cell
+
+
+def export_csv_text(queue_json_text: str, today: date, only_active: bool = False,
+                    cards: dict | None = None, delimiter: str = ",") -> str:
+    """纯文本进、CSV 文本出；不接触任何文件路径。"""
+    items = json.loads(queue_json_text).get("items", [])
+    if only_active:
+        items = [it for it in items if it.get("status") != "mastered"]
+    sched = {it.get("id"): sc.schedule_item(it, today) for it in items}
+    buf = io.StringIO()
+    w = csv.writer(buf, delimiter=delimiter)
+    w.writerow(HEADERS)
+    for it in items:
+        s = sched[it.get("id")]
+        front, back = (cards or {}).get(str(it.get("id"))) or _local_card(it, s)
+        tags = " ".join(filter(None, [
+            (it.get("subject") or "").replace(" ", "-"), _slug(it.get("topic")),
+            it.get("status"), "bootstrapped" if s["bootstrapped"] else ""]))
+        w.writerow([_neutralize(str(front)), _neutralize(str(back)), tags,
+                    s["stability"], s["difficulty"], s["interval_days"],
+                    s["suggested_next_date"], it.get("status")])
+    return buf.getvalue()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="错题队列 → Anki CSV 导出")
     parser.add_argument("--queue", required=True)
@@ -117,11 +146,22 @@ def main() -> int:
             print("路径必须位于仓库目录内：{}".format(p))
             return 2
 
+    # 内联路径守卫（本模块唯一接触文件的位置）：禁 '..' 段 + 限定仓库目录内
+    for raw in (args.queue, args.out):
+        if ".." in Path(raw).parts:
+            print("路径不允许包含 '..' 段：{}".format(raw))
+            return 2
+    queue_path = Path(args.queue).resolve()
+    out_path = Path(args.out).resolve()
+    for p in (queue_path, out_path):
+        if p != REPO and REPO not in p.parents:
+            print("路径必须位于仓库目录内：{}".format(p))
+            return 2
+
     today = date.fromisoformat(args.today) if args.today else date.today()
-    items_for_qwen = json.loads(queue_path.read_text(encoding="utf-8")).get("items", [])
-    cards = qwen_cards(items_for_qwen) if args.qwen_prompts else None
     csv_text = export_csv_text(queue_path.read_text(encoding="utf-8"), today,
-                               args.only_active, cards, args.delimiter)
+                               args.only_active, cards if args.qwen_prompts else None,
+                               args.delimiter)
     parent = out_path.parent
     if not parent.is_dir():
         parent.mkdir(exist_ok=True)  # 单层创建；更深层缺失显式失败
