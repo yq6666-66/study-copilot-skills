@@ -1,0 +1,7 @@
+# CI test dependencies (subset of requirements.txt; fastembed is not installed in CI,
+# real-model tests auto-skip). Regenerate requirements-ci.lock with:
+#   uv pip compile requirements-ci.in --universal --python-version 3.10 --generate-hashes -o requirements-ci.lock
+numpy>=1.26
+requests>=2.31
+jsonschema>=4.21
+pytest>=8.0
