@@ -1,5 +1,11 @@
 # 更新日志
 
+## [Unreleased]
+
+### Changed
+
+Root README converts reader-facing unordered lists to ordered lists. Code blocks and tables are unchanged. Documentation only; no functional change.
+
 本项目所有条目的依据：git 提交历史（公开）、`logs/qwen/` 调用留痕（25 份）、GitHub Actions 运行记录（run ID 公开可查）、`docs/competition/Qwen会话优化实录.md`（逐轮明细）。
 
 ## v1.13 — 2026-09-14（可行性验证与提交材料）
