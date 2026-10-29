@@ -24,3 +24,8 @@ Thumbs.db
 
 # Local runtime data
 .codex/
+
+# Local secrets (API keys etc.); keep a template trackable
+.env
+.env.*
+!.env.example

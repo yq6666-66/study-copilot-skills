@@ -1,0 +1,3 @@
+# Semgrep security gate (CI, Python 3.12 only). Regenerate requirements-semgrep.lock with:
+#   uv pip compile requirements-semgrep.in --python-version 3.12 --python-platform x86_64-unknown-linux-gnu --generate-hashes -o requirements-semgrep.lock
+semgrep
